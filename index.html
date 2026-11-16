@@ -37,6 +37,10 @@ h2{font-size:clamp(1.7rem,3vw,2.4rem)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .badge{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--green-l);color:var(--green)}
 .badge.warn{background:#FBEFD5;color:#7A5300}
+.badge.adult{background:#FBE3E0;color:#9A2A1E}
+.adult-note{font-size:.85rem;background:#FBE3E0;color:#7a2219;border-radius:10px;padding:10px 12px}
+.age-check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;background:#FBE3E0;border-radius:10px;padding:12px;color:#5c1a13}
+.age-check input{width:20px;height:20px;accent-color:var(--terra);flex:none;margin-top:1px}
 
 /* Header */
 header.top{position:sticky;top:0;z-index:40;background:rgba(251,246,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -112,7 +116,7 @@ section{scroll-margin-top:80px}
 .region-info .art-links button{border:0;background:var(--sand);border-radius:999px;padding:4px 10px;font-size:.8rem;cursor:pointer}
 .legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.78rem;color:var(--muted);margin-top:6px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
-.types{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:8px}
+.types{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:8px}
 .type{border:1.5px solid var(--line);background:var(--paper);border-radius:var(--radius);padding:14px 12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px;transition:border-color .15s,background .15s,transform .15s}
 .type:hover{transform:translateY(-2px);border-color:var(--terra)}
 .type .ti{font-size:1.6rem;line-height:1}
@@ -258,7 +262,7 @@ dialog::backdrop{background:rgba(30,22,16,.55)}
   .type{padding:10px 8px}
   .type .ti{font-size:1.2rem}
   .type b{font-size:.82rem}
-  .type span{display:none}
+  .type span:not(.ti){display:none}
 }
 @media (max-width:560px){
   .wrap{padding:0 16px}
@@ -488,7 +492,7 @@ dialog::backdrop{background:rgba(30,22,16,.55)}
 const DEST = {
   "Bogotá":{r:"Andina"},"Medellín":{r:"Andina"},"Cali":{r:"Pacífica"},"Barranquilla":{r:"Caribe"},
   "Cartagena":{r:"Caribe"},"Santa Marta":{r:"Caribe"},"Riohacha":{r:"Caribe"},"Montería":{r:"Caribe"},
-  "Bucaramanga":{r:"Andina"},"Pereira":{r:"Andina"},"Ibagué":{r:"Andina"},"Tunja":{r:"Andina"},
+  "Bucaramanga":{r:"Andina"},"Pereira":{r:"Andina"},"Ibagué":{r:"Andina"},"Neiva":{r:"Andina"},"Tunja":{r:"Andina"},
   "Pasto":{r:"Andina"},"Villavicencio":{r:"Orinoquía"},"Quibdó":{r:"Pacífica",remote:true},
   "Leticia":{r:"Amazonía",remote:true},"San Andrés":{r:"Insular",remote:true}
 };
@@ -535,17 +539,30 @@ PRODUCTS.push(
   {id:"p19",a:"a12",cat:"Tejeduría",shape:"mochila",name:"Bolso en fibra de chambira",price:210000,made:12,pal:["#A4672E","#E8C48A","#4E3418","#F5ECDD"],pat:"rombos",mat:"Fibra de palma chambira y tintes vegetales",dim:"30 × 25 cm",feat:["Tejido en malla tradicional","Tintes de achiote y huito","Bajo pedido: 12 días"]},
   {id:"p20",a:"a13",cat:"Talla en coco",shape:"vasija",name:"Set de cuencos en coco (x4)",price:98000,stock:10,pal:["#5A3A22","#8B5E3C","#2F1E10","#E6F3F1"],pat:"lineas",mat:"Concha de coco y aceite natural",dim:"Ø 12 cm c/u",feat:["Aptos para alimentos fríos","Pulidos a mano","Cada pieza es única"]}
 );
+/* Bebidas artesanales */
+ARTISANS.push(
+  {id:"a14",name:"Café de Origen Laboyano",owner:"Familia caficultora",town:"Pitalito",dep:"Huila",region:"Andina",hub:"Neiva",remote:false,color:"#5A3A22",since:2005,story:"Finca familiar a 1.700 m s.n.m. que cultiva, beneficia y tuesta su propio café y cacao, del árbol a la taza."},
+  {id:"a15",name:"Viche del Litoral",owner:"Sabedoras del Pacífico caucano",town:"Guapi",dep:"Cauca",region:"Pacífica",hub:"Cali",remote:true,color:"#2F7D6B",since:2016,story:"Destilan viche en alambique con caña sembrada en sus fincas, tal como lo enseñaron sus abuelas. Bebida ancestral reconocida como patrimonio."},
+  {id:"a16",name:"Sabajones de Paipa",owner:"Empresa familiar boyacense",town:"Paipa",dep:"Boyacá",region:"Andina",hub:"Tunja",remote:false,color:"#C9A227",since:1985,story:"Sabajón preparado en olla con leche fresca de la región, huevo, canela y un toque de aguardiente, con la receta de la familia."}
+);
+PRODUCTS.push(
+  {id:"p21",a:"a14",type:"Bebidas artesanales",cat:"Café",shape:"bolsa",name:"Café especial de origen Huila (500 g)",price:52000,stock:30,pal:["#3B2410","#C79A5B","#7A2E1D","#F3EADB"],pat:"lineas",mat:"Café arábica 100 %, variedades caturra y castillo",dim:"Bolsa de 500 g, en grano o molido",feat:["Tostión media: notas a panela y frutos rojos","Puntaje SCA 85+","Cosecha 2026, finca familiar","Elige grano o molido al comprar"]},
+  {id:"p22",a:"a14",type:"Bebidas artesanales",cat:"Cacao",shape:"bolsa",name:"Chocolate de mesa 100 % cacao",price:28000,stock:25,pal:["#4A2A18","#E0A526","#2A160B","#F5ECDD"],pat:"rombos",mat:"Cacao fino de aroma",dim:"500 g (16 pastillas)",feat:["Para chocolate caliente tradicional","Sin azúcar ni aditivos","Molido en piedra"]},
+  {id:"p23",a:"a15",type:"Bebidas artesanales",cat:"Destilado ancestral",shape:"botella",adult:true,name:"Viche del Pacífico (750 ml)",price:85000,stock:12,pal:["#E8DDB5","#2F7D6B","#1F3A2F","#EEF4F0"],pat:"zigzag",mat:"Destilado de caña, 30 % vol.",dim:"Botella de 750 ml",feat:["Patrimonio cultural de la Nación (Ley 2158 de 2021)","Destilado en alambique por sabedoras del litoral","Registro sanitario INVIMA"]},
+  {id:"p24",a:"a16",type:"Bebidas artesanales",cat:"Licor de huevo",shape:"botella",adult:true,name:"Sabajón artesanal de Paipa (750 ml)",price:48000,stock:15,pal:["#F4E3B0","#B5502E","#7A4E1D","#FBF3DF"],pat:"espiral",mat:"Leche, huevo, canela y aguardiente, 14 % vol.",dim:"Botella de 750 ml",feat:["Receta familiar desde 1985","Refrigerar después de abierto","Registro sanitario INVIMA"]}
+);
 /* Tipo de artesanía (filtro principal del catálogo) */
 const TYPES = [
   {k:"Vestuario",icon:"🧥",d:"Ruanas, blusas, guayaberas"},
   {k:"Accesorios de ropa",icon:"👜",d:"Mochilas, sombreros, joyas"},
   {k:"Decoración",icon:"🏺",d:"Jarrones, bandejas, hamacas"},
-  {k:"Utensilios",icon:"🥣",d:"Ollas, canastos, cuencos"}
+  {k:"Utensilios",icon:"🥣",d:"Ollas, canastos, cuencos"},
+  {k:"Bebidas artesanales",icon:"🍶",d:"Café, cacao, viche, sabajón"}
 ];
 const TYPE_OF = {p1:"Accesorios de ropa",p2:"Accesorios de ropa",p3:"Accesorios de ropa",p4:"Accesorios de ropa",p5:"Utensilios",p6:"Utensilios",p7:"Accesorios de ropa",p8:"Accesorios de ropa",p9:"Utensilios",p10:"Utensilios",p11:"Decoración",p12:"Decoración",p13:"Decoración",p14:"Decoración",p15:"Vestuario",p16:"Vestuario",p17:"Vestuario",p18:"Accesorios de ropa",p19:"Accesorios de ropa",p20:"Utensilios"};
-PRODUCTS.forEach(p => p.type = TYPE_OF[p.id]);
+PRODUCTS.forEach(p => p.type ||= TYPE_OF[p.id]);
 /* Ubicación aproximada de cada taller [longitud, latitud] */
-const LL = {a1:[-72.27,11.71],a2:[-75.55,9.18],a3:[-74.9,4.1],a4:[-74.43,9.24],a5:[-72.5,6.46],a6:[-77.1,4.25],a7:[-75.12,9.83],a8:[-77.28,1.21],a9:[-72.95,5.78],a10:[-75.9,4.75],a11:[-73.7,3.7],a12:[-70.5,-3.77],a13:[-81.7,12.55]};
+const LL = {a1:[-72.27,11.71],a2:[-75.55,9.18],a3:[-74.9,4.1],a4:[-74.43,9.24],a5:[-72.5,6.46],a6:[-77.1,4.25],a7:[-75.12,9.83],a8:[-77.28,1.21],a9:[-72.95,5.78],a10:[-75.9,4.75],a11:[-73.7,3.7],a12:[-70.5,-3.77],a13:[-81.7,12.55],a14:[-76.05,1.85],a15:[-77.9,2.57],a16:[-73.1,5.78]};
 /* Regiones naturales: color, etiqueta y polígono aproximado (se recorta con el contorno del país) */
 const REGIONS = {
   "Caribe":{c:"#E0A526",lbl:[-74.6,10.0],poly:[[-80,13],[-70,13],[-72.9,9.4],[-73.4,8.4],[-74.1,7.4],[-75.6,7.5],[-76.7,7.9],[-77.4,8.5],[-80,8.5]]},
@@ -622,6 +639,8 @@ function artSVG(p){
     ruana:`<path d="M110 92 L290 92 L344 246 L56 246 Z" fill="${f}" stroke="${s}" stroke-opacity=".2" stroke-width="2"/><ellipse cx="200" cy="96" rx="30" ry="14" fill="${bg}"/><path d="M200 108 V246" stroke="${bg}" stroke-width="6"/><path d="M66 248 v18 M86 248 v18 M106 248 v18 M126 248 v18 M146 248 v18 M166 248 v18 M234 248 v18 M254 248 v18 M274 248 v18 M294 248 v18 M314 248 v18 M334 248 v18" stroke="${k}" stroke-width="3"/>`,
     camisa:`<path d="M156 70 L118 86 L72 140 L106 166 L132 140 L132 266 L268 266 L268 140 L294 166 L328 140 L282 86 L244 70 Q200 98 156 70 Z" fill="${f}" stroke="${s}" stroke-opacity=".25" stroke-width="2"/><path d="M200 92 V266" stroke="${k}" stroke-opacity=".5" stroke-width="2" stroke-dasharray="2 10"/><path d="M150 120 h34 M216 120 h34" stroke="${k}" stroke-width="3" stroke-opacity=".6"/>`,
     cinturon:`<path d="M30 168 Q200 104 370 168 L370 204 Q200 140 30 204 Z" fill="${f}" stroke="${s}" stroke-opacity=".3" stroke-width="2"/><rect x="172" y="114" width="56" height="56" rx="8" fill="none" stroke="${k}" stroke-width="9"/><path d="M200 120 V166" stroke="${k}" stroke-width="5"/>`,
+    botella:`<ellipse cx="200" cy="272" rx="58" ry="8" fill="${s}" opacity=".12"/><path d="M188 40 h24 v54 q0 14 18 30 q14 12 14 34 v104 q0 10 -10 10 h-68 q-10 0 -10 -10 v-104 q0 -22 14 -34 q18 -16 18 -30 Z" fill="${a}" stroke="${s}" stroke-opacity=".3" stroke-width="2"/><rect x="186" y="30" width="28" height="22" rx="4" fill="${k}"/><rect x="156" y="170" width="88" height="70" rx="6" fill="${f}" stroke="${s}" stroke-opacity=".25"/><rect x="168" y="196" width="64" height="18" rx="3" fill="${bg}" opacity=".9"/><path d="M168 132 q-6 40 0 120" stroke="#fff" stroke-opacity=".35" stroke-width="8" fill="none" stroke-linecap="round"/>`,
+    bolsa:`<ellipse cx="200" cy="270" rx="78" ry="9" fill="${s}" opacity=".12"/><path d="M138 70 L262 70 L272 262 Q200 274 128 262 Z" fill="${a}" stroke="${s}" stroke-opacity=".25" stroke-width="2"/><rect x="134" y="62" width="132" height="18" rx="3" fill="${k}"/><rect x="150" y="128" width="100" height="96" rx="8" fill="${f}"/><rect x="164" y="160" width="72" height="30" rx="4" fill="${bg}" opacity=".92"/><path d="M152 92 h96" stroke="${bg}" stroke-opacity=".5" stroke-width="2" stroke-dasharray="3 5"/>`,
     caja:`<rect x="104" y="140" width="192" height="116" rx="10" fill="${f}" stroke="${s}" stroke-opacity=".2" stroke-width="2"/><path d="M96 140 L200 104 L304 140 Z" fill="${a}"/><rect x="96" y="134" width="208" height="16" rx="6" fill="${k}"/><rect x="186" y="150" width="28" height="18" rx="4" fill="${b}"/>`
   };
   return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(p.name)}"><defs>${pattern(id,p.pat,[a,b,k])}</defs><rect width="400" height="300" fill="${bg}"/><circle cx="330" cy="50" r="90" fill="${a}" opacity=".08"/><circle cx="60" cy="270" r="70" fill="${b}" opacity=".18"/>${shapes[p.shape]||""}</svg>`;
@@ -635,7 +654,7 @@ function cardHTML(p){
   return `<button class="card" data-p="${p.id}" aria-label="Ver ${esc(p.name)}">
     <div class="art">${artSVG(p)}</div>
     <div class="body">
-      ${avail}
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${avail}${p.adult?'<span class="badge adult">+18</span>':""}</div>
       <h3>${esc(p.name)}</h3>
       <div class="who">${esc(a.name)} · ${esc(a.town)}, ${esc(a.dep)}</div>
       <div class="price">${cop(p.price)}</div>
@@ -733,6 +752,7 @@ function openProduct(id){
         <h2 id="pdTitle" style="font-size:1.7rem;margin:0">${esc(p.name)}</h2>
         <div>por <button class="artisan-link" data-artisan="${a.id}">${esc(a.name)}</button> · 📍 ${esc(a.town)}, ${esc(a.dep)}</div>
         <div><div class="price">${cop(p.price)}</div><span class="muted" style="font-size:.85rem">Precio fijado por el artesano · IVA incluido si aplica</span></div>
+        ${p.adult?`<div class="adult-note">🔞 <b>Venta prohibida a menores de 18 años.</b> Se confirma la mayoría de edad al pagar y la transportadora verifica la cédula en la entrega. El exceso de alcohol es perjudicial para la salud (Ley 124 de 1994).</div>`:""}
         <ul>${p.feat.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
         <dl class="kv"><dt>Material</dt><dd>${esc(p.mat)}</dd><dt>Medidas</dt><dd>${esc(p.dim)}</dd><dt>Disponibilidad</dt><dd>${p.stock>0?`${p.stock} en stock`:`Bajo pedido (${p.made} días hábiles)`}</dd><dt>Origen</dt><dd>${esc(a.town)}, ${esc(a.dep)} · Región ${esc(a.region)}</dd></dl>
         <div class="eta-box">
@@ -843,6 +863,7 @@ function openCheckout(){
         <div class="pay-methods">
           ${["PSE","Tarjeta crédito/débito","Nequi","Daviplata","Efecty"].map((m,i)=>`<label><input type="radio" name="pm" value="${m}" ${i===0?"checked":""}>${m}</label>`).join("")}
         </div></div>
+      ${cart.some(i=>prod(i.id).adult)?`<label class="age-check"><input type="checkbox" id="coAge" required> <span><b>Confirmo que soy mayor de 18 años.</b> Tu pedido incluye bebidas alcohólicas; quien reciba debe presentar su cédula a la transportadora.</span></label>`:""}
       <div id="coShip"></div>
       <div style="border-top:1px solid var(--line);padding-top:12px">
         <div class="sum"><span>Productos</span><span id="coSub"></span></div>
@@ -865,6 +886,7 @@ function openCheckout(){
   $("#coForm").onsubmit = e => {
     e.preventDefault();
     if(!$("#coName").value.trim() || !$("#coAddr").value.trim()){ toast("Completa nombre y dirección"); return; }
+    if($("#coAge") && !$("#coAge").checked){ toast("Debes confirmar que eres mayor de 18 años"); $("#coAge").focus(); return; }
     const btn = $("#coPay"); btn.disabled = true; btn.textContent = "Procesando pago…";
     setTimeout(()=>confirmOrder(document.querySelector('input[name="pm"]:checked').value), 1200);
   };
@@ -894,7 +916,7 @@ function confirmOrder(method){
 /* ---------------- Formulario de artesanos ---------------- */
 function renderSellPreview(){
   const price = Math.max(0, +$("#fPrecio").value || 0), dias = Math.max(0, +$("#fDias").value || 0);
-  const oficio = $("#fOficio").value, shape = {"Vestuario":"ruana","Accesorios de ropa":"mochila","Decoración":"caja","Utensilios":"vasija"}[oficio];
+  const oficio = $("#fOficio").value, shape = {"Vestuario":"ruana","Accesorios de ropa":"mochila","Decoración":"caja","Utensilios":"vasija","Bebidas artesanales":"botella"}[oficio];
   const fake = {name:$("#fProd").value || "Tu producto", shape, pat:"rombos", pal:["#B5502E","#E0A526","#2F5D50","#FBF0E0"]};
   $("#sellPreview").innerHTML = `<div class="art">${artSVG(fake)}</div><div class="body">
     ${dias>0?`<span class="badge warn">Bajo pedido · ${dias} días</span>`:`<span class="badge">En stock</span>`}
@@ -1046,6 +1068,16 @@ const BUILD = {
   },
   camisa(p, M, A, g){
     g.add(flat([[-0.09,0.75],[-0.2,0.71],[-0.36,0.52],[-0.27,0.44],[-0.2,0.52],[-0.2,0],[0.2,0],[0.2,0.52],[0.27,0.44],[0.36,0.52],[0.2,0.71],[0.09,0.75],[0,0.69]], 0.012, M));
+  },
+  botella(p, M, A, g){
+    const glass = new THREE.MeshStandardMaterial({color:p.pal[0], roughness:.12, metalness:0, transparent:true, opacity:.88});
+    g.add(lathe([[0,0],[0.036,0],[0.038,0.006],[0.038,0.19],[0.03,0.225],[0.014,0.25],[0.014,0.29],[0,0.29]], glass));
+    const label = new THREE.Mesh(new THREE.CylinderGeometry(0.0385,0.0385,0.08,48,1,true), M); label.position.y = 0.11; g.add(label);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.016,0.025,24), A); cap.position.y = 0.3; g.add(cap);
+  },
+  bolsa(p, M, A, g){
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.13,0.2,0.07), M); body.position.y = 0.1; g.add(body);
+    const seal = new THREE.Mesh(new THREE.BoxGeometry(0.132,0.015,0.02), A); seal.position.y = 0.2075; g.add(seal);
   },
   cinturon(p, M, A, g){
     const b = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.04,64,1,true), M); b.position.y = 0.02; g.add(b);
