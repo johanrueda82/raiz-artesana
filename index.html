@@ -67,11 +67,11 @@ nav.main a{text-decoration:none;font-weight:500;color:var(--muted)}nav.main a:ho
 .hero-art .tile:nth-child(4){transform:translateY(18px)}
 
 /* Value props */
-.props{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:8px 0 56px}
-.prop{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
-.prop .ico{width:40px;height:40px;border-radius:10px;background:var(--sand);display:grid;place-items:center;font-size:1.3rem;margin-bottom:10px}
-.prop h3{font-family:var(--sans);font-size:1rem;margin-bottom:4px}
-.prop p{margin:0;font-size:.92rem;color:var(--muted)}
+.props{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0 0 36px}
+.prop{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:34px 1fr;column-gap:10px;align-items:start}
+.prop .ico{width:34px;height:34px;border-radius:9px;background:var(--sand);display:grid;place-items:center;font-size:1.05rem;grid-row:span 2}
+.prop h3{font-family:var(--sans);font-size:.92rem;margin:0 0 2px;line-height:1.3}
+.prop p{margin:0;font-size:.8rem;line-height:1.4;color:var(--muted)}
 
 /* Catalog */
 section{scroll-margin-top:80px}
@@ -244,14 +244,41 @@ dialog::backdrop{background:rgba(30,22,16,.55)}
   .types{grid-template-columns:repeat(3,1fr)}
 }
 @media (max-width:560px){
-  .map-panel{grid-template-columns:1fr}
-  #coMap{max-width:280px;margin:6px auto}
-  .types{grid-template-columns:1fr 1fr}
+  /* Móvil: mapa y resumen de región lado a lado para ocupar menos alto */
+  .map-panel{grid-template-columns:44% 1fr;gap:10px;padding:12px;align-items:center}
+  #coMap{max-width:none;margin:4px 0 0}
+  .map-panel h3{font-size:.9rem}
+  .map-panel .muted{font-size:.72rem!important}
+  .region-info{font-size:.78rem;padding:8px}
+  .region-info b{font-size:.95rem}
+  .region-info .btn{padding:6px 10px;font-size:.78rem}
+  .legend{font-size:.68rem;gap:3px 8px}
+  .cat-layout{gap:16px}
+  .types{grid-template-columns:repeat(3,1fr);gap:8px}
+  .type{padding:10px 8px}
+  .type .ti{font-size:1.2rem}
+  .type b{font-size:.82rem}
+  .type span{display:none}
 }
 @media (max-width:560px){
   .wrap{padding:0 16px}
-  .props,.steps{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
   form.sell-form{grid-template-columns:1fr}
+  /* Móvil: cinta de beneficios en 2×2, solo ícono y título */
+  .props{grid-template-columns:1fr 1fr;gap:8px;padding-bottom:20px}
+  .prop{padding:8px 10px;grid-template-columns:28px 1fr;column-gap:8px;align-items:center}
+  .prop .ico{width:28px;height:28px;font-size:.9rem;grid-row:auto}
+  .prop h3{font-size:.78rem;margin:0}
+  .prop p{display:none}
+  /* Encabezado más corto: la ilustración decorativa se oculta */
+  .hero{padding:28px 0 20px}
+  .hero-art{display:none}
+  .hero p.lead{font-size:1rem}
+  .search{margin:18px 0 12px}
+  .stats{gap:20px;margin-top:16px}
+  .stats b{font-size:1.4rem}
+  .catalog{padding:28px 0}
+  .cat-head{margin-bottom:12px}
   .sla{overflow-x:auto}
   .cart-btn .lbl{display:none}
 }
