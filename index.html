@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raíz Artesana — Mercado de artesanos colombianos</title>
+<meta name="description" content="Marketplace 100% dedicado a empresarios artesanos colombianos. Compra directo al taller, con precio fijado por el artesano y tiempo de entrega garantizado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FBF6EE; --paper:#FFFFFF; --sand:#F3EADB; --ink:#2A211B; --muted:#6B5E53; --line:#E6D8C4;
+  --terra:#B5502E; --terra-d:#8E3B1F; --mustard:#E0A526; --green:#2F5D50; --green-l:#E2EEE8; --red:#B3261E;
+  --radius:14px; --shadow:0 1px 2px rgba(42,33,27,.06),0 8px 24px rgba(42,33,27,.08);
+  --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 var(--sans)}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mustard);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em}
+h2{font-size:clamp(1.7rem,3vw,2.4rem)}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:700}
+.muted{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--terra);color:#fff}.btn-primary:hover{background:var(--terra-d)}
+.btn-ghost{background:transparent;border:1.5px solid var(--ink)}.btn-ghost:hover{background:var(--ink);color:var(--cream)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#244a40}
+.btn-sm{padding:8px 14px;font-size:.9rem}
+.chip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.92rem;font-weight:500;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--green-l);color:var(--green)}
+.badge.warn{background:#FBEFD5;color:#7A5300}
+
+/* Header */
+header.top{position:sticky;top:0;z-index:40;background:rgba(251,246,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;font-size:1.3rem;text-decoration:none}
+.logo svg{width:34px;height:34px}
+nav.main{display:flex;gap:22px;margin-left:auto}
+nav.main a{text-decoration:none;font-weight:500;color:var(--muted)}nav.main a:hover{color:var(--ink)}
+.cart-btn{position:relative;background:var(--ink);color:var(--cream);border:0;border-radius:999px;padding:9px 16px;font-weight:600;cursor:pointer;display:flex;gap:8px;align-items:center}
+.cart-count{background:var(--mustard);color:var(--ink);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:.8rem}
+.tricolor{height:4px;background:linear-gradient(90deg,#FCD116 0 50%,#003893 50% 75%,#CE1126 75%)}
+
+/* Hero */
+.hero{padding:64px 0 48px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(2.3rem,5vw,3.8rem)}
+.hero h1 em{font-style:normal;color:var(--terra)}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:34em}
+.search{display:flex;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:6px;margin:26px 0 18px;box-shadow:var(--shadow);max-width:560px}
+.search input{flex:1;border:0;background:transparent;padding:10px 16px;outline:none;min-width:0}
+.stats{display:flex;gap:32px;margin-top:28px;flex-wrap:wrap}
+.stats b{display:block;font-family:var(--serif);font-size:1.8rem}
+.stats span{font-size:.88rem;color:var(--muted)}
+.hero-art{display:grid;grid-template-columns:1fr 1fr;gap:14px;transform:rotate(-2deg)}
+.hero-art .tile{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:var(--paper)}
+.hero-art .tile:nth-child(2){transform:translateY(28px)}
+.hero-art .tile:nth-child(3){transform:translateY(-10px)}
+.hero-art .tile:nth-child(4){transform:translateY(18px)}
+
+/* Value props */
+.props{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:8px 0 56px}
+.prop{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.prop .ico{width:40px;height:40px;border-radius:10px;background:var(--sand);display:grid;place-items:center;font-size:1.3rem;margin-bottom:10px}
+.prop h3{font-family:var(--sans);font-size:1rem;margin-bottom:4px}
+.prop p{margin:0;font-size:.92rem;color:var(--muted)}
+
+/* Catalog */
+section{scroll-margin-top:80px}
+.catalog{padding:56px 0;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cat-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.ship-to{display:flex;align-items:center;gap:10px;background:var(--green-l);border-radius:12px;padding:10px 14px;color:var(--green);font-weight:600}
+.ship-to select{border:1.5px solid #bcd6cb;border-radius:8px;padding:6px 8px;background:#fff;font-weight:600}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:thin}
+.toolbar{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin:8px 0 22px}
+.toolbar select{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper)}
+.active-filter{display:none;align-items:center;gap:8px;background:var(--sand);border-radius:999px;padding:6px 8px 6px 14px;font-size:.9rem}
+.active-filter.on{display:inline-flex}
+.active-filter button{border:0;background:var(--ink);color:#fff;border-radius:999px;width:22px;height:22px;cursor:pointer;line-height:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.card{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .2s,box-shadow .2s;text-align:left;padding:0}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card .art{aspect-ratio:4/3;overflow:hidden}
+.card .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-family:var(--sans);font-size:1rem;font-weight:600;margin:0}
+.card .who{font-size:.85rem;color:var(--muted)}
+.card .price{font-family:var(--serif);font-size:1.3rem;font-weight:700;margin-top:auto}
+.card .eta{font-size:.83rem;color:var(--green);display:flex;gap:6px;align-items:center}
+.empty{padding:40px;text-align:center;color:var(--muted);grid-column:1/-1}
+.cat-layout{display:grid;grid-template-columns:330px 1fr;gap:32px;align-items:start}
+.map-panel{position:sticky;top:86px;background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.map-panel h3{font-family:var(--sans);font-size:1rem;margin:0 0 2px}
+#coMap{width:100%;height:auto;margin:6px 0}
+#coMap .reg{cursor:pointer;stroke:#fff;stroke-width:1.6;transition:fill .2s,opacity .2s}
+#coMap .reg:hover{opacity:.82}
+#coMap .reg:focus-visible{outline:none;stroke:var(--ink);stroke-width:3}
+#coMap .lbl{font:600 11px var(--sans);fill:var(--ink);pointer-events:none;text-anchor:middle}
+#coMap .lbl.on{fill:#fff}
+#coMap .pin{cursor:pointer}
+#coMap .pin circle{stroke:#fff;stroke-width:2}
+.region-info{font-size:.9rem;background:var(--paper);border-radius:10px;padding:12px;border:1px solid var(--line)}
+.region-info b{font-family:var(--serif);font-size:1.1rem}
+.region-info .art-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.region-info .art-links button{border:0;background:var(--sand);border-radius:999px;padding:4px 10px;font-size:.8rem;cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.78rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.types{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:8px}
+.type{border:1.5px solid var(--line);background:var(--paper);border-radius:var(--radius);padding:14px 12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px;transition:border-color .15s,background .15s,transform .15s}
+.type:hover{transform:translateY(-2px);border-color:var(--terra)}
+.type .ti{font-size:1.6rem;line-height:1}
+.type b{font-size:.95rem}
+.type span{font-size:.8rem;color:var(--muted)}
+.type[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.type[aria-pressed="true"] span{color:#d9cfc3}
+
+/* Artisans */
+.artisans{padding:64px 0}
+.art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;margin-top:24px}
+.artisan{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.artisan .cover{height:96px}
+.artisan .info{padding:0 18px 18px;margin-top:-30px;display:flex;flex-direction:column;gap:6px;flex:1}
+.avatar{width:60px;height:60px;border-radius:50%;border:4px solid var(--paper);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:1.3rem;color:#fff}
+.artisan h3{font-size:1.15rem;margin:4px 0 0}
+.artisan .loc{font-size:.88rem;color:var(--muted)}
+.artisan p{font-size:.92rem;margin:4px 0 10px}
+.artisan .btn{margin-top:auto;align-self:flex-start}
+
+/* How */
+.how{padding:64px 0;background:var(--sand)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:26px 0 40px;counter-reset:s}
+.step{background:var(--paper);border-radius:var(--radius);padding:20px;position:relative}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:18px;width:30px;height:30px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;font-weight:700}
+.step h3{font-family:var(--sans);font-size:1rem;margin:10px 0 4px}
+.step p{margin:0;font-size:.92rem;color:var(--muted)}
+.sla{background:var(--paper);border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.sla table{width:100%;border-collapse:collapse;font-size:.95rem}
+.sla th,.sla td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line)}
+.sla th{background:var(--ink);color:var(--cream);font-weight:600;font-size:.85rem}
+.sla tr:last-child td{border-bottom:0}
+.sla .note{padding:12px 16px;font-size:.85rem;color:var(--muted);background:var(--cream)}
+
+/* Sell */
+.sell{padding:64px 0}
+.sell .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+form.sell-form{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.85rem;font-weight:600}
+.field input,.field select,.field textarea{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--cream)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--terra);outline:none}
+.preview-box{position:sticky;top:90px;display:flex;flex-direction:column;gap:16px}
+.payout{background:var(--ink);color:var(--cream);border-radius:var(--radius);padding:20px}
+.payout .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.18);font-size:.95rem}
+.payout .row:last-child{border:0;font-weight:700;font-size:1.1rem;color:var(--mustard)}
+
+footer{background:var(--ink);color:#d9cfc3;padding:44px 0 28px;font-size:.92rem}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+footer h4{color:#fff;margin:0 0 10px;font-size:.95rem}
+footer a{display:block;text-decoration:none;color:#d9cfc3;margin:4px 0}
+footer .legal{border-top:1px solid #4a3e35;margin-top:28px;padding-top:18px;font-size:.82rem;color:#a99c8f}
+
+/* Dialogs */
+dialog{border:0;border-radius:18px;padding:0;max-width:min(940px,calc(100vw - 24px));width:100%;background:var(--paper);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(30,22,16,.55)}
+.dlg-close{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.9);cursor:pointer;font-size:1.3rem;z-index:2;box-shadow:var(--shadow)}
+.pd{display:grid;grid-template-columns:1fr 1fr}
+.pd .art{min-height:100%}
+.pd .art svg{width:100%;height:100%;object-fit:cover}
+.pd .info{padding:28px;display:flex;flex-direction:column;gap:12px;max-height:88vh;overflow:auto}
+.pd .price{font-family:var(--serif);font-size:2rem;font-weight:700}
+.pd ul{margin:0;padding-left:18px}
+.pd li{margin:3px 0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.92rem}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:500}
+.eta-box{background:var(--green-l);border-radius:12px;padding:14px;color:#1f4339;font-size:.93rem}
+.eta-box strong{display:block;font-size:1.05rem;color:var(--green)}
+.eta-box select{border:1.5px solid #bcd6cb;border-radius:8px;padding:4px 6px;background:#fff}
+.qty{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.qty button{border:0;background:var(--cream);width:36px;cursor:pointer;font-size:1.1rem}
+.qty span{min-width:36px;display:grid;place-items:center;font-weight:600}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.artisan-link{background:none;border:0;padding:0;color:var(--terra);font-weight:600;cursor:pointer;text-decoration:underline}
+
+.drawer{position:fixed;inset:0 0 0 auto;width:min(420px,100vw);background:var(--paper);z-index:60;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.2)}
+.drawer.open{transform:none}
+.scrim{position:fixed;inset:0;background:rgba(30,22,16,.45);z-index:55;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.drawer .items{flex:1;overflow:auto;padding:12px 20px}
+.ci{display:grid;grid-template-columns:64px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.ci .thumb{width:64px;height:64px;border-radius:10px;overflow:hidden}
+.ci .t{font-weight:600;font-size:.92rem}
+.ci .s{font-size:.8rem;color:var(--muted)}
+.ci .rm{border:0;background:none;color:var(--red);cursor:pointer;font-size:.82rem;padding:0}
+.drawer footer{background:var(--cream);color:var(--ink);padding:16px 20px;border-top:1px solid var(--line)}
+.sum{display:flex;justify-content:space-between;margin:4px 0;font-size:.95rem}
+.sum.total{font-weight:700;font-size:1.15rem;margin-top:8px}
+
+.checkout{padding:28px;max-height:90vh;overflow:auto}
+.pay-methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.pay-methods label{border:1.5px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;display:flex;gap:8px;align-items:center;font-weight:600;font-size:.92rem}
+.pay-methods input{accent-color:var(--terra)}
+.pay-methods label:has(input:checked){border-color:var(--terra);background:#FBEDE7}
+.shipment{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:var(--cream)}
+.timeline{list-style:none;margin:10px 0 0;padding:0}
+.timeline li{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:center;padding:5px 0;font-size:.9rem}
+.timeline li::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--line);justify-self:center}
+.timeline li.done::before{background:var(--green)}
+.timeline time{color:var(--muted);font-size:.85rem}
+.demo-note{font-size:.82rem;background:#FBEFD5;color:#6a4800;border-radius:10px;padding:10px 12px}
+.ar-ov{position:fixed;inset:0;z-index:90;background:radial-gradient(circle at 50% 40%,#FFFFFF,#EFE4D2);display:flex;flex-direction:column}
+.ar-ov[hidden]{display:none}
+.ar-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:rgba(251,246,238,.95)}
+.ar-head .dlg-close{position:static}
+#arStage{flex:1;position:relative;min-height:0}
+#arStage model-viewer{width:100%;height:100%;--poster-color:transparent;background:transparent}
+.ar-launch{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:var(--terra);color:#fff;border:0;border-radius:999px;padding:14px 24px;font-weight:700;font-size:1rem;box-shadow:0 10px 30px rgba(181,80,46,.4);cursor:pointer;white-space:nowrap}
+.ar-loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-weight:600}
+.ar-foot{padding:12px 16px;font-size:.88rem;color:var(--muted);background:rgba(251,246,238,.95);border-top:1px solid var(--line)}
+.ar-foot b{color:var(--ink)}
+.btn-ar{background:#2A211B;color:#fff}.btn-ar:hover{background:#000}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,120px);background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:999px;z-index:80;transition:transform .3s;font-weight:500;box-shadow:var(--shadow)}
+.toast.show{transform:translate(-50%,0)}
+
+@media (max-width:900px){
+  nav.main{display:none}
+  .hero .wrap,.sell .wrap{grid-template-columns:1fr}
+  .hero-art{max-width:460px}
+  .props,.steps{grid-template-columns:1fr 1fr}
+  .pd{grid-template-columns:1fr}
+  .pd .art{max-height:300px;overflow:hidden}
+  footer .cols{grid-template-columns:1fr 1fr}
+  .preview-box{position:static}
+  .cat-layout{grid-template-columns:1fr}
+  .map-panel{position:static;display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:16px;align-items:start}
+  .types{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:560px){
+  .map-panel{grid-template-columns:1fr}
+  #coMap{max-width:280px;margin:6px auto}
+  .types{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .props,.steps{grid-template-columns:1fr}
+  form.sell-form{grid-template-columns:1fr}
+  .sla{overflow-x:auto}
+  .cart-btn .lbl{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="tricolor" aria-hidden="true"></div>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Raíz Artesana, inicio">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#B5502E"/><path d="M8 26 L14 16 L20 26 L26 16 L32 26" fill="none" stroke="#FBF6EE" stroke-width="3" stroke-linejoin="round"/><path d="M8 31 H32" stroke="#E0A526" stroke-width="3"/></svg>
+      Raíz Artesana
+    </a>
+    <nav class="main" aria-label="Principal">
+      <a href="#catalogo">Explorar</a>
+      <a href="#artesanos">Artesanos</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#vende">Vende con nosotros</a>
+    </nav>
+    <button class="cart-btn" id="openCart" aria-label="Abrir carrito">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="lbl">Carrito</span><span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Hecho a mano en Colombia · 100% artesanos</div>
+      <h1>Compra directo al taller de <em>quien lo crea</em>.</h1>
+      <p class="lead">El mercado digital exclusivo para empresarios artesanos colombianos. Cada artesano tiene su propio espacio, fija su precio y tú sabes desde el pago cuándo llega tu pedido.</p>
+      <form class="search" id="heroSearch" role="search">
+        <input id="heroQ" type="search" placeholder="Busca mochilas, sombrero vueltiao, filigrana…" aria-label="Buscar productos">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </form>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn-ghost" href="#vende">Soy artesano, quiero vender</a>
+      </div>
+      <div class="stats">
+        <div><b id="statArt">8</b><span>talleres en el piloto</span></div>
+        <div><b id="statDep">7</b><span>departamentos</span></div>
+        <div><b>+90%</b><span>del precio para el artesano</span></div>
+      </div>
+    </div>
+    <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="props">
+    <div class="prop"><div class="ico">📱</div><h3>Pruébalo en tu espacio</h3><p>Con realidad aumentada ves la pieza a tamaño real en tu sala, mesa o pared antes de comprar.</p></div>
+    <div class="prop"><div class="ico">💰</div><h3>Precio del artesano</h3><p>Cada taller define su precio de venta. Sin intermediarios que lo cambien.</p></div>
+    <div class="prop"><div class="ico">🔒</div><h3>Pago protegido</h3><p>PSE, tarjetas, Nequi y Daviplata. Se libera al artesano cuando recibes.</p></div>
+    <div class="prop"><div class="ico">🚚</div><h3>Entrega con fecha</h3><p>Ventana de entrega según el acuerdo de servicio con la transportadora.</p></div>
+  </div>
+</div>
+
+<section class="catalog" id="catalogo">
+  <div class="wrap">
+    <div class="cat-head">
+      <div>
+        <div class="eyebrow">Catálogo</div>
+        <h2>Piezas únicas de todas las regiones</h2>
+      </div>
+      <label class="ship-to">🚚 Enviar a
+        <select id="destSel" aria-label="Ciudad de destino"></select>
+      </label>
+    </div>
+    <div class="cat-layout">
+    <aside class="map-panel" aria-label="Explorar por región">
+      <div>
+        <h3>Explora por región</h3>
+        <div class="muted" style="font-size:.82rem">Toca una región del mapa o un taller 📍</div>
+        <svg id="coMap" viewBox="0 0 430 590" role="group" aria-label="Mapa de Colombia por regiones"></svg>
+      </div>
+      <div>
+        <div class="region-info" id="regionInfo" aria-live="polite"></div>
+        <div class="legend" id="mapLegend"></div>
+      </div>
+    </aside>
+    <div>
+    <div class="types" id="typeFilters" role="group" aria-label="Filtrar por tipo de artesanía"></div>
+    <div class="toolbar">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <span class="muted" id="resultCount"></span>
+        <span class="active-filter" id="activeFilter"><span id="activeFilterTxt"></span><button id="clearFilter" aria-label="Quitar filtro">×</button></span>
+      </div>
+      <label>Ordenar:
+        <select id="sortSel">
+          <option value="rel">Destacados</option>
+          <option value="asc">Precio: menor a mayor</option>
+          <option value="desc">Precio: mayor a menor</option>
+          <option value="eta">Llega más pronto</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid" id="grid"></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="artisans" id="artesanos">
+  <div class="wrap">
+    <div class="eyebrow">Los talleres</div>
+    <h2>Cada artesano, su propio espacio</h2>
+    <p class="muted" style="max-width:40em">Conoce la historia, el oficio y la ubicación de cada taller. Entra a su vitrina para ver todos sus productos.</p>
+    <div class="art-grid" id="artGrid"></div>
+  </div>
+</section>
+
+<section class="how" id="como-funciona">
+  <div class="wrap">
+    <div class="eyebrow">Cómo funciona</div>
+    <h2>Del taller a tu puerta, con fecha clara</h2>
+    <div class="steps">
+      <div class="step"><h3>Eliges tu pieza</h3><p>Ves fotos, características, ubicación y precio del artesano. Desde el celular la pones en tu espacio con realidad aumentada, a tamaño real.</p></div>
+      <div class="step"><h3>Pagas seguro</h3><p>Pasarela con PSE, tarjeta, Nequi o Daviplata. El dinero queda protegido.</p></div>
+      <div class="step"><h3>El taller prepara</h3><p>Productos en stock salen en 1 día hábil; los hechos bajo pedido indican sus días de elaboración.</p></div>
+      <div class="step"><h3>Llega en la fecha</h3><p>La transportadora cumple el acuerdo de servicio según la ruta. Sigues el envío en todo momento.</p></div>
+    </div>
+    <h3 style="font-size:1.3rem">Acuerdo de nivel de servicio con la transportadora (piloto)</h3>
+    <div class="sla">
+      <table>
+        <thead><tr><th>Tipo de ruta</th><th>Ejemplo</th><th>Tránsito (días hábiles)</th><th>Flete de referencia</th></tr></thead>
+        <tbody id="slaBody"></tbody>
+      </table>
+      <div class="note">Días hábiles: lunes a sábado, sin festivos nacionales. Tiempo total = preparación del taller + tránsito. Valores de referencia para el piloto; se ajustan al contrato definitivo con la transportadora.</div>
+    </div>
+  </div>
+</section>
+
+<section class="sell" id="vende">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Para artesanos</div>
+      <h2>Abre tu vitrina en Raíz Artesana</h2>
+      <p class="muted">Registra tu taller y tu primer producto. Tú decides el precio; nosotros nos encargamos del pago seguro y la logística con la transportadora aliada.</p>
+      <form class="sell-form" id="sellForm" novalidate>
+        <div class="field"><label for="fTaller">Nombre del taller</label><input id="fTaller" required placeholder="Ej. Taller Manos del Sinú"></div>
+        <div class="field"><label for="fOficio">Tipo de artesanía</label><select id="fOficio"></select></div>
+        <div class="field"><label for="fDep">Departamento</label><select id="fDep"></select></div>
+        <div class="field"><label for="fMun">Municipio / vereda</label><input id="fMun" required placeholder="Ej. Tuchín"></div>
+        <div class="field full"><label for="fProd">Primer producto</label><input id="fProd" required placeholder="Ej. Sombrero vueltiao 19 vueltas"></div>
+        <div class="field"><label for="fPrecio">Tu precio de venta (COP)</label><input id="fPrecio" type="number" min="1000" step="1000" value="250000" inputmode="numeric"></div>
+        <div class="field"><label for="fDias">Días de elaboración (0 = en stock)</label><input id="fDias" type="number" min="0" max="60" value="0"></div>
+        <div class="field full"><label for="fDesc">Características (una por línea)</label><textarea id="fDesc" rows="3" placeholder="Material: caña flecha&#10;Hecho a mano en 12 días"></textarea></div>
+        <div class="field full"><label for="fContacto">Celular de contacto</label><input id="fContacto" type="tel" placeholder="300 000 0000" inputmode="tel"></div>
+        <div class="field full"><button class="btn btn-primary" type="submit">Enviar solicitud de vitrina</button><span class="muted" style="font-size:.82rem">Piloto: la información no se envía a ningún servidor.</span></div>
+      </form>
+    </div>
+    <div class="preview-box">
+      <div class="eyebrow">Así se verá tu producto</div>
+      <div class="card" id="sellPreview" style="cursor:default"></div>
+      <div class="payout" aria-live="polite">
+        <div class="row"><span>Precio al público</span><span id="pPub"></span></div>
+        <div class="row"><span>Comisión plataforma (8%)</span><span id="pCom"></span></div>
+        <div class="row"><span>Pasarela de pago (≈2,9% + $900)</span><span id="pPas"></span></div>
+        <div class="row"><span>Recibes por venta</span><span id="pNet"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="logo" style="color:#fff;margin-bottom:10px">Raíz Artesana</div><p>Marketplace para empresarios artesanos colombianos. Piloto de validación — noviembre 2026.</p></div>
+      <div><h4>Compra</h4><a href="#catalogo">Catálogo</a><a href="#artesanos">Talleres</a><a href="#como-funciona">Envíos y tiempos</a></div>
+      <div><h4>Vende</h4><a href="#vende">Abre tu vitrina</a><a href="#como-funciona">Comisiones</a></div>
+      <div><h4>Legal</h4><a href="#">Términos y condiciones</a><a href="#">Tratamiento de datos (Ley 1581)</a><a href="#">Derecho de retracto</a></div>
+    </div>
+    <div class="legal">Prototipo de demostración. Talleres, productos, precios y pagos son ficticios; ningún pago es real.</div>
+  </div>
+</footer>
+
+<!-- Product detail -->
+<dialog id="dlgProduct" aria-labelledby="pdTitle"><button class="dlg-close" data-close aria-label="Cerrar">×</button><div id="pdBody"></div></dialog>
+<!-- Artisan space -->
+<dialog id="dlgArtisan" aria-labelledby="asTitle"><button class="dlg-close" data-close aria-label="Cerrar">×</button><div id="asBody"></div></dialog>
+<!-- Checkout -->
+<dialog id="dlgCheckout" aria-labelledby="coTitle"><button class="dlg-close" data-close aria-label="Cerrar">×</button><div class="checkout" id="coBody"></div></dialog>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Carrito de compras">
+  <header><h3 style="margin:0">Tu carrito</h3><button class="dlg-close" style="position:static;box-shadow:none;background:var(--sand)" id="closeCart" aria-label="Cerrar carrito">×</button></header>
+  <div class="items" id="cartItems"></div>
+  <footer id="cartFoot"></footer>
+</aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- Visor 3D / Realidad aumentada -->
+<div class="ar-ov" id="arOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="arTitle">
+  <div class="ar-head">
+    <div><b id="arTitle"></b><div class="muted" style="font-size:.85rem" id="arSub"></div></div>
+    <button class="dlg-close" id="arClose" aria-label="Cerrar visor">×</button>
+  </div>
+  <div id="arStage"></div>
+  <div class="ar-foot" id="arFoot"></div>
+</div>
+
+<script>
+/* ---------------- Datos del piloto (ficticios) ---------------- */
+const DEST = {
+  "Bogotá":{r:"Andina"},"Medellín":{r:"Andina"},"Cali":{r:"Pacífica"},"Barranquilla":{r:"Caribe"},
+  "Cartagena":{r:"Caribe"},"Santa Marta":{r:"Caribe"},"Riohacha":{r:"Caribe"},"Montería":{r:"Caribe"},
+  "Bucaramanga":{r:"Andina"},"Pereira":{r:"Andina"},"Ibagué":{r:"Andina"},"Tunja":{r:"Andina"},
+  "Pasto":{r:"Andina"},"Villavicencio":{r:"Orinoquía"},"Quibdó":{r:"Pacífica",remote:true},
+  "Leticia":{r:"Amazonía",remote:true},"San Andrés":{r:"Insular",remote:true}
+};
+const ARTISANS = [
+  {id:"a1",name:"Taller Kanaas",owner:"Tejedoras de la Alta Guajira",town:"Uribia",dep:"La Guajira",region:"Caribe",hub:"Riohacha",remote:true,color:"#C2412D",since:2009,story:"Colectivo de tejedoras que conserva los diseños kanaas transmitidos de madres a hijas. Cada mochila es una sola pieza tejida en crochet."},
+  {id:"a2",name:"Sombreros Caña Flecha",owner:"Familia artesana zenú",town:"Tuchín",dep:"Córdoba",region:"Caribe",hub:"Montería",remote:false,color:"#2A211B",since:1998,story:"Tres generaciones trenzando caña flecha. Trabajan el sombrero vueltiao de 15 a 27 vueltas, con tintes naturales."},
+  {id:"a3",name:"Barro Negro del Magdalena",owner:"Taller familiar de alfareras",town:"La Chamba, El Guamo",dep:"Tolima",region:"Andina",hub:"Ibagué",remote:false,color:"#3B3B3B",since:2004,story:"Cerámica negra bruñida con piedra y cocida en horno de leña. Piezas aptas para cocinar y servir."},
+  {id:"a4",name:"Filigrana del Río",owner:"Orfebres momposinos",town:"Santa Cruz de Mompox",dep:"Bolívar",region:"Caribe",hub:"Cartagena",remote:true,color:"#8A8F98",since:2012,story:"Joyería en filigrana de plata 950, hilo a hilo, con la técnica heredada de los orfebres ribereños."},
+  {id:"a5",name:"Fibras de Guacamayas",owner:"Asociación de tejedoras",town:"Guacamayas",dep:"Boyacá",region:"Andina",hub:"Tunja",remote:true,color:"#D08B2C",since:2001,story:"Cestería en espiral de paja trigo y fique teñido. Diseños geométricos llenos de color de la provincia de Gutiérrez."},
+  {id:"a6",name:"Werregue del San Juan",owner:"Tejedores del litoral",town:"Litoral del San Juan",dep:"Chocó",region:"Pacífica",hub:"Cali",remote:true,color:"#1E1B18",since:2015,story:"Jarrones tejidos en fibra de palma werregue, de trama tan cerrada que pueden contener agua. Cada pieza toma semanas."},
+  {id:"a7",name:"Telares Montes de María",owner:"Tejedoras sanjacinteras",town:"San Jacinto",dep:"Bolívar",region:"Caribe",hub:"Cartagena",remote:false,color:"#2F5D50",since:1995,story:"Hamacas y chinchorros tejidos en telar vertical con hilo de algodón grueso y flecos tradicionales."},
+  {id:"a8",name:"Mopa-Mopa Taller Sur",owner:"Maestros barnizadores",town:"Pasto",dep:"Nariño",region:"Andina",hub:"Pasto",remote:false,color:"#7A2E4A",since:2007,story:"Barniz de Pasto: resina de mopa-mopa estirada a mano y aplicada sobre madera en láminas finísimas."}
+];
+const CATS = ["Mochilas","Sombreros","Cerámica","Joyería","Cestería","Textiles","Madera y barniz"];
+const PRODUCTS = [
+  {id:"p1",a:"a1",cat:"Mochilas",shape:"mochila",name:"Mochila wayuu kanaas tradicional",price:380000,stock:3,pal:["#C2412D","#F2B33D","#1F6F78","#FBF0E0"],pat:"rombos",mat:"Hilo acrílico de alta resistencia",dim:"28 × 30 cm, gaza 120 cm",feat:["Tejida a mano en una sola hebra","Diseño kanaas con significado tradicional","Gaza (correa) tejida en telar","Incluye certificado de origen del taller"]},
+  {id:"p2",a:"a1",cat:"Mochilas",shape:"mochila",name:"Mochila wayuu Susu monocolor",price:240000,made:10,pal:["#1F6F78","#BFE3E0","#0F3E43","#EAF5F3"],pat:"zigzag",mat:"Hilo acrílico",dim:"25 × 27 cm",feat:["Hecha bajo pedido en el color que elijas","Fondo circular con figura en espiral","10 días de elaboración"]},
+  {id:"p3",a:"a2",cat:"Sombreros",shape:"sombrero",name:"Sombrero vueltiao 21 vueltas",price:290000,stock:5,pal:["#1E1B18","#F4EAD5","#1E1B18","#FBF6EE"],pat:"zigzag",mat:"Caña flecha natural y teñida",dim:"Tallas 55 a 60",feat:["21 vueltas de trenza","Pintas tradicionales zenú","Plegable sin perder su forma"]},
+  {id:"p4",a:"a2",cat:"Sombreros",shape:"sombrero",name:"Sombrero vueltiao fino 27 vueltas",price:680000,made:15,pal:["#1E1B18","#FFF8E8","#7A4E1D","#FBF6EE"],pat:"rombos",mat:"Caña flecha seleccionada",dim:"Talla a medida",feat:["Pieza de colección, trenza extra fina","Hecho a la medida de tu cabeza","15 días de elaboración"]},
+  {id:"p5",a:"a3",cat:"Cerámica",shape:"vasija",name:"Olla de barro negro (4 L)",price:145000,stock:8,pal:["#2B2B2B","#4A4A4A","#1A1A1A","#E9E2D6"],pat:"lineas",mat:"Arcilla bruñida, cocción en leña",dim:"Ø 26 cm, alto 18 cm",feat:["Apta para estufa a gas y horno","Curada lista para usar","Ideal para sancocho y arroz"]},
+  {id:"p6",a:"a3",cat:"Cerámica",shape:"vasija",name:"Juego de 4 cazuelas pequeñas",price:168000,stock:4,pal:["#363636","#5A5A5A","#202020","#EFE6D8"],pat:"lineas",mat:"Arcilla negra",dim:"Ø 14 cm c/u",feat:["Para servir o gratinar","Bruñidas a mano con piedra","Empaque reforzado para envío"]},
+  {id:"p7",a:"a4",cat:"Joyería",shape:"joya",name:"Aretes topitos en filigrana",price:210000,stock:6,pal:["#B7BCC4","#E9ECF0","#8A8F98","#F5F1EA"],pat:"espiral",mat:"Plata 950",dim:"Ø 1,8 cm",feat:["Filigrana hecha hilo a hilo","Cierre de mariposa","Estuche de regalo"]},
+  {id:"p8",a:"a4",cat:"Joyería",shape:"joya",name:"Collar momposino en filigrana",price:520000,made:12,pal:["#D4A84B","#F7E7B8","#9C7A2E","#F5F1EA"],pat:"espiral",mat:"Plata 950 con baño de oro",dim:"Cadena 45 cm, dije 4 cm",feat:["Dije de flor momposina","Bajo pedido: 12 días","Garantía de un año"]},
+  {id:"p9",a:"a5",cat:"Cestería",shape:"canasto",name:"Canasto en espiral de paja y fique",price:118000,stock:7,pal:["#D08B2C","#C23B5A","#2E7D6B","#FBF0DC"],pat:"espiral",mat:"Paja trigo y fique teñido",dim:"Ø 30 cm, alto 22 cm",feat:["Con tapa","Tintes de colores vivos","Ideal para pan o frutas"]},
+  {id:"p10",a:"a5",cat:"Cestería",shape:"canasto",name:"Individuales en espiral (x6)",price:156000,stock:3,pal:["#E0A526","#7A2E4A","#2F5D50","#FBF3DF"],pat:"rombos",mat:"Fique y paja",dim:"Ø 35 cm",feat:["Set de 6 piezas","Lavables con paño húmedo","Diseño geométrico boyacense"]},
+  {id:"p11",a:"a6",cat:"Cestería",shape:"canasto",name:"Jarrón werregue con tapa",price:890000,made:25,pal:["#1E1B18","#E07A2F","#F4E3C3","#F5EEE2"],pat:"rombos",mat:"Palma werregue y tintes naturales",dim:"Alto 32 cm",feat:["Trama cerrada que retiene agua","Iconografía tradicional del litoral","25 días de elaboración"]},
+  {id:"p12",a:"a7",cat:"Textiles",shape:"hamaca",name:"Hamaca doble sanjacintera",price:420000,stock:4,pal:["#2F5D50","#E0A526","#C2412D","#F2EDE2"],pat:"lineas",mat:"Algodón grueso en telar vertical",dim:"Cuerpo 2,1 × 1,6 m",feat:["Soporta hasta 200 kg","Flecos y cabuyas incluidas","Tejido tupido y fresco"]},
+  {id:"p13",a:"a8",cat:"Madera y barniz",shape:"caja",name:"Bandeja en barniz de Pasto",price:260000,stock:5,pal:["#7A2E4A","#E0A526","#2F5D50","#F7EDE4"],pat:"flores",mat:"Madera de cedro y resina mopa-mopa",dim:"40 × 28 cm",feat:["Motivos florales andinos","Acabado resistente al agua","Técnica Patrimonio de la Humanidad (UNESCO)"]},
+  {id:"p14",a:"a8",cat:"Madera y barniz",shape:"caja",name:"Caja joyero mopa-mopa",price:195000,made:8,pal:["#1F3A5F","#E0A526","#C2412D","#F2EEE6"],pat:"flores",mat:"Madera y barniz de Pasto",dim:"18 × 12 × 8 cm",feat:["Interior forrado","Personalizable con iniciales","8 días de elaboración"]}
+];
+/* Talleres adicionales para cubrir todas las regiones y el tipo Vestuario */
+ARTISANS.push(
+  {id:"a9",name:"Lanas de Nobsa",owner:"Tejedores de telar de pedal",town:"Nobsa",dep:"Boyacá",region:"Andina",hub:"Tunja",remote:false,color:"#6B4A2B",since:1990,story:"Ruanas y cobijas en lana virgen de oveja, hiladas y tejidas en telar de pedal como en el altiplano cundiboyacense."},
+  {id:"a10",name:"Calados de Cartago",owner:"Bordadoras cartagüeñas",town:"Cartago",dep:"Valle del Cauca",region:"Andina",hub:"Pereira",remote:false,color:"#B5502E",since:2003,story:"Bordado calado hecho a mano sobre lino y algodón: deshilado, cruz y sombra, puntada por puntada."},
+  {id:"a11",name:"Talabartería del Llano",owner:"Maestros talabarteros",town:"San Martín",dep:"Meta",region:"Orinoquía",hub:"Villavicencio",remote:false,color:"#7A4E1D",since:1999,story:"Cuero curtido y repujado a mano con la tradición llanera: cinturones, monturas y cotizas."},
+  {id:"a12",name:"Chambira del Amazonas",owner:"Tejedoras ticuna",town:"Puerto Nariño",dep:"Amazonas",region:"Amazonía",hub:"Leticia",remote:true,color:"#A4672E",since:2011,story:"Fibra de palma de chambira extraída, torcida y teñida con plantas de la selva para tejer bolsos y hamacas."},
+  {id:"a13",name:"Coco y Mar",owner:"Artesanos raizales",town:"San Andrés",dep:"San Andrés y Providencia",region:"Insular",hub:"San Andrés",remote:true,color:"#1F6F78",since:2014,story:"Utensilios de cocina en concha de coco pulida y madera de la isla, con acabados naturales aptos para alimentos."}
+);
+PRODUCTS.push(
+  {id:"p15",a:"a9",cat:"Tejeduría",shape:"ruana",name:"Ruana boyacense en lana virgen",price:230000,stock:6,pal:["#6B4A2B","#D9C7A8","#3A2A1C","#F3ECE0"],pat:"lineas",mat:"Lana virgen de oveja",dim:"Talla única, 130 × 120 cm",feat:["Tejida en telar de pedal","Abrigadora y transpirable","Flecos anudados a mano"]},
+  {id:"p16",a:"a10",cat:"Bordado",shape:"camisa",name:"Blusa en calado cartagüeño",price:185000,stock:5,pal:["#FFFFFF","#E8DCCB","#B5502E","#F6EFE6"],pat:"espiral",mat:"Algodón 100%",dim:"Tallas S a XL",feat:["Calado hecho a mano","Bordado en el pecho y las mangas","Fresca para clima cálido"]},
+  {id:"p17",a:"a10",cat:"Bordado",shape:"camisa",name:"Guayabera calada en lino",price:265000,made:10,pal:["#F4EEE2","#D8CBB3","#2F5D50","#EFE7DA"],pat:"lineas",mat:"Lino",dim:"Tallas S a XXL o a medida",feat:["Cuatro bolsillos y alforzas","Calado en espalda y frente","Bajo pedido: 10 días"]},
+  {id:"p18",a:"a11",cat:"Talabartería",shape:"cinturon",name:"Cinturón llanero en cuero repujado",price:175000,stock:6,pal:["#7A4E1D","#C79A5B","#3B2410","#F3EADB"],pat:"zigzag",mat:"Cuero de res curtido al vegetal",dim:"Tallas 30 a 44, ancho 4 cm",feat:["Repujado a mano","Hebilla en bronce","Personalizable con iniciales"]},
+  {id:"p19",a:"a12",cat:"Tejeduría",shape:"mochila",name:"Bolso en fibra de chambira",price:210000,made:12,pal:["#A4672E","#E8C48A","#4E3418","#F5ECDD"],pat:"rombos",mat:"Fibra de palma chambira y tintes vegetales",dim:"30 × 25 cm",feat:["Tejido en malla tradicional","Tintes de achiote y huito","Bajo pedido: 12 días"]},
+  {id:"p20",a:"a13",cat:"Talla en coco",shape:"vasija",name:"Set de cuencos en coco (x4)",price:98000,stock:10,pal:["#5A3A22","#8B5E3C","#2F1E10","#E6F3F1"],pat:"lineas",mat:"Concha de coco y aceite natural",dim:"Ø 12 cm c/u",feat:["Aptos para alimentos fríos","Pulidos a mano","Cada pieza es única"]}
+);
+/* Tipo de artesanía (filtro principal del catálogo) */
+const TYPES = [
+  {k:"Vestuario",icon:"🧥",d:"Ruanas, blusas, guayaberas"},
+  {k:"Accesorios de ropa",icon:"👜",d:"Mochilas, sombreros, joyas"},
+  {k:"Decoración",icon:"🏺",d:"Jarrones, bandejas, hamacas"},
+  {k:"Utensilios",icon:"🥣",d:"Ollas, canastos, cuencos"}
+];
+const TYPE_OF = {p1:"Accesorios de ropa",p2:"Accesorios de ropa",p3:"Accesorios de ropa",p4:"Accesorios de ropa",p5:"Utensilios",p6:"Utensilios",p7:"Accesorios de ropa",p8:"Accesorios de ropa",p9:"Utensilios",p10:"Utensilios",p11:"Decoración",p12:"Decoración",p13:"Decoración",p14:"Decoración",p15:"Vestuario",p16:"Vestuario",p17:"Vestuario",p18:"Accesorios de ropa",p19:"Accesorios de ropa",p20:"Utensilios"};
+PRODUCTS.forEach(p => p.type = TYPE_OF[p.id]);
+/* Ubicación aproximada de cada taller [longitud, latitud] */
+const LL = {a1:[-72.27,11.71],a2:[-75.55,9.18],a3:[-74.9,4.1],a4:[-74.43,9.24],a5:[-72.5,6.46],a6:[-77.1,4.25],a7:[-75.12,9.83],a8:[-77.28,1.21],a9:[-72.95,5.78],a10:[-75.9,4.75],a11:[-73.7,3.7],a12:[-70.5,-3.77],a13:[-81.7,12.55]};
+/* Regiones naturales: color, etiqueta y polígono aproximado (se recorta con el contorno del país) */
+const REGIONS = {
+  "Caribe":{c:"#E0A526",lbl:[-74.6,10.0],poly:[[-80,13],[-70,13],[-72.9,9.4],[-73.4,8.4],[-74.1,7.4],[-75.6,7.5],[-76.7,7.9],[-77.4,8.5],[-80,8.5]]},
+  "Pacífica":{c:"#2F7D6B",lbl:[-77.05,5.4],rot:-78,poly:[[-80,8.5],[-77.4,8.5],[-76.7,7.9],[-76.1,6.8],[-76.2,5.0],[-76.3,3.6],[-76.9,2.3],[-77.5,1.0],[-77.6,0],[-80,0]]},
+  "Andina":{c:"#B5502E",lbl:[-74.9,5.9],poly:[[-77.5,1.0],[-76.6,1.0],[-75.6,1.6],[-74.6,2.6],[-73.9,3.4],[-73.5,4.4],[-72.9,5.5],[-72.2,7.0],[-71.0,7.5],[-72.9,9.4],[-73.4,8.4],[-74.1,7.4],[-75.6,7.5],[-76.7,7.9],[-76.1,6.8],[-76.2,5.0],[-76.3,3.6],[-76.9,2.3]]},
+  "Orinoquía":{c:"#8A9A3B",lbl:[-70.3,5.0],poly:[[-71.0,7.5],[-72.2,7.0],[-72.9,5.5],[-73.5,4.4],[-73.9,3.4],[-74.6,2.6],[-72,2.8],[-66,3.2],[-66,7.5]]},
+  "Amazonía":{c:"#3E6B3A",lbl:[-71.6,0.2],poly:[[-77.6,0],[-77.5,1.0],[-76.6,1.0],[-75.6,1.6],[-74.6,2.6],[-72,2.8],[-66,3.2],[-66,-5],[-80,-5],[-80,0]]},
+  "Insular":{c:"#1F6F78"}
+};
+const CO_OUTLINE = [[-77.35,8.67],[-76.9,8.1],[-76.75,8.6],[-76.3,9.0],[-75.7,9.4],[-75.6,10.4],[-75.2,10.9],[-74.8,11.05],[-74.2,11.3],[-73.3,11.3],[-72.6,11.7],[-72.2,11.9],[-71.7,12.45],[-71.15,12.15],[-71.3,11.8],[-71.95,11.55],[-72.25,11.15],[-72.75,10.4],[-73.0,9.7],[-73.0,9.2],[-72.75,9.1],[-72.4,8.4],[-72.45,7.9],[-72.2,7.35],[-71.8,7.05],[-70.7,7.05],[-70.1,6.95],[-69.4,6.1],[-68.5,6.2],[-67.5,6.2],[-67.85,5.3],[-67.8,4.5],[-67.3,3.4],[-67.85,2.8],[-67.3,2.0],[-66.9,1.2],[-68.2,1.75],[-69.4,1.75],[-69.85,1.07],[-69.2,0.6],[-70.05,0.55],[-70.05,-0.15],[-69.6,-0.6],[-69.4,-1.2],[-69.95,-4.2],[-70.4,-3.8],[-70.0,-2.7],[-71.0,-2.3],[-72.3,-2.45],[-73.1,-1.8],[-73.6,-1.2],[-74.3,-0.4],[-75.2,-0.1],[-75.6,0.05],[-76.4,0.4],[-77.1,0.4],[-77.4,0.8],[-78.0,0.9],[-78.85,1.4],[-78.8,1.8],[-78.4,2.5],[-77.85,2.65],[-77.5,3.3],[-77.25,3.8],[-77.4,4.3],[-77.3,5.5],[-77.45,6.6],[-77.9,7.2],[-77.75,7.7]];
+/* Acuerdo de servicio con la transportadora (piloto) */
+const SLA = {
+  local:{label:"Misma ciudad",ex:"Pasto → Pasto",d:[1,2],cost:8900},
+  regional:{label:"Misma región",ex:"Tuchín → Cartagena",d:[2,3],cost:13900},
+  nacional:{label:"Nacional entre capitales",ex:"Ibagué → Barranquilla",d:[3,5],cost:17900},
+  remoto:{label:"Recargo zona de difícil acceso",ex:"Origen o destino rural / insular",d:[2,3],cost:14000}
+};
+/* Festivos nacionales en el horizonte del piloto */
+const HOLIDAYS = new Set(["2026-11-16","2026-12-08","2026-12-25","2027-01-01","2027-01-11","2027-03-22","2027-03-25","2027-03-26"]);
+
+/* ---------------- Utilidades ---------------- */
+const $ = s => document.querySelector(s);
+const cop = n => new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n);
+const art = id => ARTISANS.find(a => a.id === id);
+const prod = id => PRODUCTS.find(p => p.id === id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const isBiz = d => d.getDay() !== 0 && !HOLIDAYS.has(iso(d));
+function addBiz(from, n){ const d = new Date(from); let k = 0; while(k < n){ d.setDate(d.getDate()+1); if(isBiz(d)) k++; } return d; }
+const fmtDay = d => d.toLocaleDateString("es-CO",{weekday:"short",day:"numeric",month:"short"});
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2600); }
+
+let dest = "Cali";
+const IS_MOBILE = matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
+function route(a, city){
+  const d = DEST[city]; let cls, days, cost;
+  if(a.hub === city){ cls="local"; } else if(a.region === d.r){ cls="regional"; } else { cls="nacional"; }
+  days = [...SLA[cls].d]; cost = SLA[cls].cost;
+  const remote = a.remote || d.remote;
+  if(remote){ days[0]+=SLA.remoto.d[0]; days[1]+=SLA.remoto.d[1]; cost+=SLA.remoto.cost; }
+  return {cls, label:SLA[cls].label + (remote?" + zona de difícil acceso":""), days, cost, remote};
+}
+function prepDays(p){ return p.stock > 0 ? 1 : p.made; }
+function eta(p, city=dest, from=new Date()){
+  const r = route(art(p.a), city), prep = prepDays(p);
+  const ship = addBiz(from, prep);
+  return {r, prep, ship, min:addBiz(ship, r.days[0]), max:addBiz(ship, r.days[1])};
+}
+
+/* ---------------- Ilustraciones SVG por oficio ---------------- */
+let uid = 0;
+function pattern(id, type, c){
+  const [a,b,k] = c;
+  const P = {
+    rombos:`<pattern id="${id}" width="28" height="28" patternUnits="userSpaceOnUse"><rect width="28" height="28" fill="${a}"/><path d="M14 2 L26 14 L14 26 L2 14Z" fill="${b}"/><path d="M14 8 L20 14 L14 20 L8 14Z" fill="${k}"/></pattern>`,
+    zigzag:`<pattern id="${id}" width="24" height="16" patternUnits="userSpaceOnUse"><rect width="24" height="16" fill="${b}"/><path d="M0 12 L6 4 L12 12 L18 4 L24 12" fill="none" stroke="${a}" stroke-width="4"/></pattern>`,
+    lineas:`<pattern id="${id}" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="${a}"/><rect y="8" width="20" height="4" fill="${b}"/><rect y="16" width="20" height="2" fill="${k}"/></pattern>`,
+    espiral:`<pattern id="${id}" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="${a}"/><circle cx="15" cy="15" r="10" fill="none" stroke="${b}" stroke-width="3"/><circle cx="15" cy="15" r="4" fill="${k}"/></pattern>`,
+    flores:`<pattern id="${id}" width="36" height="36" patternUnits="userSpaceOnUse"><rect width="36" height="36" fill="${a}"/><g fill="${b}"><circle cx="18" cy="11" r="5"/><circle cx="18" cy="25" r="5"/><circle cx="11" cy="18" r="5"/><circle cx="25" cy="18" r="5"/></g><circle cx="18" cy="18" r="4" fill="${k}"/></pattern>`
+  };
+  return P[type] || P.rombos;
+}
+function artSVG(p){
+  const id = "pt" + (uid++), f = `url(#${id})`, [a,b,k,bg] = p.pal, s = "#2A211B";
+  const shapes = {
+    mochila:`<path d="M150 122 Q200 20 250 122" fill="none" stroke="${a}" stroke-width="14" stroke-linecap="round"/><rect x="128" y="112" width="144" height="150" rx="26" fill="${f}" stroke="${s}" stroke-opacity=".25" stroke-width="2"/><rect x="128" y="112" width="144" height="16" rx="8" fill="${k}"/><path d="M200 262 v22 M188 262 v18 M212 262 v18" stroke="${a}" stroke-width="4" stroke-linecap="round"/>`,
+    sombrero:`<ellipse cx="200" cy="205" rx="160" ry="44" fill="${f}" stroke="${s}" stroke-opacity=".25" stroke-width="2"/><path d="M135 205 Q132 92 200 88 Q268 92 265 205 Z" fill="${f}" stroke="${s}" stroke-opacity=".25" stroke-width="2"/><ellipse cx="200" cy="205" rx="66" ry="14" fill="${s}" opacity=".18"/>`,
+    vasija:`<path d="M146 112 Q112 160 128 222 Q146 270 200 270 Q254 270 272 222 Q288 160 254 112 Z" fill="${f}"/><ellipse cx="200" cy="112" rx="58" ry="14" fill="${k}"/><ellipse cx="200" cy="110" rx="46" ry="9" fill="${bg}" opacity=".25"/><path d="M128 150 q-26 6 -18 34 M272 150 q26 6 18 34" fill="none" stroke="${k}" stroke-width="9" stroke-linecap="round"/><path d="M160 150 Q150 200 170 245" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="10" stroke-linecap="round"/>`,
+    joya:`<g fill="none" stroke="${k}" stroke-width="3"><path d="M140 70 v40"/><path d="M260 70 v40"/></g><circle cx="140" cy="160" r="52" fill="${f}" stroke="${k}" stroke-width="4"/><circle cx="260" cy="160" r="52" fill="${f}" stroke="${k}" stroke-width="4"/><circle cx="140" cy="160" r="16" fill="${b}"/><circle cx="260" cy="160" r="16" fill="${b}"/><path d="M140 212 l0 30 M260 212 l0 30" stroke="${k}" stroke-width="3"/><circle cx="140" cy="248" r="8" fill="${a}"/><circle cx="260" cy="248" r="8" fill="${a}"/>`,
+    canasto:`<path d="M112 128 L288 128 L262 262 Q200 276 138 262 Z" fill="${f}" stroke="${s}" stroke-opacity=".2" stroke-width="2"/><ellipse cx="200" cy="128" rx="90" ry="22" fill="${a}"/><ellipse cx="200" cy="126" rx="74" ry="14" fill="${k}" opacity=".5"/><path d="M178 96 Q200 70 222 96" fill="none" stroke="${a}" stroke-width="10" stroke-linecap="round"/>`,
+    hamaca:`<path d="M44 60 V270 M356 60 V270" stroke="#6B4A2B" stroke-width="12" stroke-linecap="round"/><path d="M50 90 L110 120 M350 90 L290 120" stroke="${k}" stroke-width="3"/><path d="M106 116 Q200 250 294 116 L294 134 Q200 286 106 134 Z" fill="${f}" stroke="${s}" stroke-opacity=".2" stroke-width="2"/><path d="M116 140 Q200 290 284 140" fill="none" stroke="${b}" stroke-width="3" stroke-dasharray="4 6"/>`,
+    ruana:`<path d="M110 92 L290 92 L344 246 L56 246 Z" fill="${f}" stroke="${s}" stroke-opacity=".2" stroke-width="2"/><ellipse cx="200" cy="96" rx="30" ry="14" fill="${bg}"/><path d="M200 108 V246" stroke="${bg}" stroke-width="6"/><path d="M66 248 v18 M86 248 v18 M106 248 v18 M126 248 v18 M146 248 v18 M166 248 v18 M234 248 v18 M254 248 v18 M274 248 v18 M294 248 v18 M314 248 v18 M334 248 v18" stroke="${k}" stroke-width="3"/>`,
+    camisa:`<path d="M156 70 L118 86 L72 140 L106 166 L132 140 L132 266 L268 266 L268 140 L294 166 L328 140 L282 86 L244 70 Q200 98 156 70 Z" fill="${f}" stroke="${s}" stroke-opacity=".25" stroke-width="2"/><path d="M200 92 V266" stroke="${k}" stroke-opacity=".5" stroke-width="2" stroke-dasharray="2 10"/><path d="M150 120 h34 M216 120 h34" stroke="${k}" stroke-width="3" stroke-opacity=".6"/>`,
+    cinturon:`<path d="M30 168 Q200 104 370 168 L370 204 Q200 140 30 204 Z" fill="${f}" stroke="${s}" stroke-opacity=".3" stroke-width="2"/><rect x="172" y="114" width="56" height="56" rx="8" fill="none" stroke="${k}" stroke-width="9"/><path d="M200 120 V166" stroke="${k}" stroke-width="5"/>`,
+    caja:`<rect x="104" y="140" width="192" height="116" rx="10" fill="${f}" stroke="${s}" stroke-opacity=".2" stroke-width="2"/><path d="M96 140 L200 104 L304 140 Z" fill="${a}"/><rect x="96" y="134" width="208" height="16" rx="6" fill="${k}"/><rect x="186" y="150" width="28" height="18" rx="4" fill="${b}"/>`
+  };
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(p.name)}"><defs>${pattern(id,p.pat,[a,b,k])}</defs><rect width="400" height="300" fill="${bg}"/><circle cx="330" cy="50" r="90" fill="${a}" opacity=".08"/><circle cx="60" cy="270" r="70" fill="${b}" opacity=".18"/>${shapes[p.shape]||""}</svg>`;
+}
+
+/* ---------------- Catálogo ---------------- */
+const state = {type:null, region:null, q:"", artisan:null, sort:"rel"};
+function cardHTML(p){
+  const a = art(p.a), e = eta(p);
+  const avail = p.stock > 0 ? `<span class="badge">En stock · ${p.stock}</span>` : `<span class="badge warn">Bajo pedido · ${p.made} días</span>`;
+  return `<button class="card" data-p="${p.id}" aria-label="Ver ${esc(p.name)}">
+    <div class="art">${artSVG(p)}</div>
+    <div class="body">
+      ${avail}
+      <h3>${esc(p.name)}</h3>
+      <div class="who">${esc(a.name)} · ${esc(a.town)}, ${esc(a.dep)}</div>
+      <div class="price">${cop(p.price)}</div>
+      <div class="eta">🚚 Llega ${fmtDay(e.min)} – ${fmtDay(e.max)}</div>
+    </div></button>`;
+}
+function renderGrid(){
+  const q = state.q.trim().toLowerCase();
+  let list = PRODUCTS.filter(p => {
+    const a = art(p.a);
+    if(state.type && p.type !== state.type) return false;
+    if(state.region && a.region !== state.region) return false;
+    if(state.artisan && p.a !== state.artisan) return false;
+    if(q && !(p.name+" "+p.cat+" "+p.type+" "+a.name+" "+a.town+" "+a.dep+" "+p.mat).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(state.sort==="asc") list.sort((x,y)=>x.price-y.price);
+  if(state.sort==="desc") list.sort((x,y)=>y.price-x.price);
+  if(state.sort==="eta") list.sort((x,y)=>eta(x).max-eta(y).max);
+  $("#grid").innerHTML = list.length ? list.map(cardHTML).join("") : `<div class="empty">No encontramos piezas${state.type?` de <b>${esc(state.type)}</b>`:""}${state.region?` en la región <b>${esc(state.region)}</b>`:""}.<br>¿Conoces un taller que debería estar aquí? <a href="#vende">Invítalo a vender</a>.</div>`;
+  $("#resultCount").textContent = `${list.length} ${list.length===1?"pieza":"piezas"}`;
+  const af = $("#activeFilter");
+  if(state.q || state.artisan){ af.classList.add("on"); $("#activeFilterTxt").textContent = state.artisan ? `Taller: ${art(state.artisan).name}` : `Búsqueda: “${state.q}”`; }
+  else af.classList.remove("on");
+}
+/* ---------------- Tipos de artesanía ---------------- */
+function renderTypes(){
+  const count = k => PRODUCTS.filter(p => (!k || p.type===k) && (!state.region || art(p.a).region===state.region)).length;
+  $("#typeFilters").innerHTML = [{k:"",icon:"✨",d:"Todo el catálogo"}].concat(TYPES).map(t => `
+    <button class="type" data-type="${esc(t.k)}" aria-pressed="${(state.type||"")===t.k}">
+      <span class="ti" aria-hidden="true">${t.icon}</span><b>${t.k||"Todo"}</b><span>${t.d} · ${count(t.k)}</span>
+    </button>`).join("");
+}
+
+/* ---------------- Mapa de Colombia por regiones ---------------- */
+const K = 34, prj = ([lon,lat]) => [((lon+79.4)*K).toFixed(1), ((12.8-lat)*K).toFixed(1)];
+const pathOf = pts => "M" + pts.map(p => prj(p).join(" ")).join("L") + "Z";
+function renderMap(){
+  const svg = $("#coMap"), sel = state.region;
+  const fill = r => !sel ? REGIONS[r].c : (r===sel ? REGIONS[r].c : "#E6DCCD");
+  const stats = r => { const as = ARTISANS.filter(a=>a.region===r); return {as, n:PRODUCTS.filter(p=>art(p.a).region===r).length}; };
+  let h = `<defs><clipPath id="coClip"><path d="${pathOf(CO_OUTLINE)}"/></clipPath></defs>`;
+  h += `<g clip-path="url(#coClip)">`;
+  for(const [r,R] of Object.entries(REGIONS)) if(R.poly){
+    const s = stats(r);
+    h += `<path class="reg" data-region="${r}" d="${pathOf(R.poly)}" fill="${fill(r)}" tabindex="0" role="button" aria-pressed="${sel===r}" aria-label="Región ${r}: ${s.as.length} talleres"><title>${r} · ${s.as.length} talleres · ${s.n} piezas</title></path>`;
+  }
+  h += `</g><path d="${pathOf(CO_OUTLINE)}" fill="none" stroke="#2A211B" stroke-opacity=".55" stroke-width="1.5" pointer-events="none"/>`;
+  // Recuadro insular (San Andrés y Providencia)
+  const si = stats("Insular");
+  h += `<g><rect class="reg" data-region="Insular" x="6" y="6" width="96" height="74" rx="8" fill="${fill("Insular")}" fill-opacity="${!sel||sel==="Insular"?1:.9}" tabindex="0" role="button" aria-pressed="${sel==="Insular"}" aria-label="Región Insular: ${si.as.length} talleres"><title>Insular · ${si.as.length} talleres · ${si.n} piezas</title></rect>
+    <path d="M44 30 q6 -8 10 2 q2 10 -4 14 q-8 -4 -6 -16Z" fill="#fff" opacity=".85" pointer-events="none"/><circle cx="72" cy="22" r="4" fill="#fff" opacity=".85" pointer-events="none"/>
+    <text class="lbl ${!sel||sel==="Insular"?"on":""}" x="54" y="70">Insular</text></g>`;
+  for(const [r,R] of Object.entries(REGIONS)) if(R.lbl){
+    const [x,y] = prj(R.lbl), on = !sel || sel===r;
+    h += `<text class="lbl ${on?"on":""}" x="${x}" y="${y}" ${R.rot?`transform="rotate(${R.rot} ${x} ${y})"`:""}>${r}</text>`;
+  }
+  // Talleres
+  ARTISANS.forEach(a => {
+    let [x,y] = a.region==="Insular" ? [30,46] : prj(LL[a.id]);
+    const dim = sel && sel!==a.region;
+    h += `<g class="pin" data-artisan="${a.id}" tabindex="0" role="button" aria-label="Taller ${esc(a.name)}, ${esc(a.town)}" opacity="${dim?.35:1}"><title>${esc(a.name)} · ${esc(a.town)}</title><circle cx="${x}" cy="${y}" r="7" fill="${a.color}"/><circle cx="${x}" cy="${y}" r="2.5" fill="#fff" stroke="none"/></g>`;
+  });
+  svg.innerHTML = h;
+  // Panel de información
+  if(sel){
+    const s = stats(sel);
+    $("#regionInfo").innerHTML = `<div class="eyebrow" style="color:${REGIONS[sel].c}">Región seleccionada</div><b>${sel}</b>
+      <div class="muted">${s.as.length} ${s.as.length===1?"taller":"talleres"} · ${s.n} piezas</div>
+      <div class="art-links">${s.as.map(a=>`<button data-artisan="${a.id}">📍 ${esc(a.name)}</button>`).join("")}</div>
+      <button class="btn btn-ghost btn-sm" id="allRegions" style="margin-top:10px">Ver todas las regiones</button>`;
+    $("#allRegions").onclick = () => selectRegion(null);
+  } else {
+    $("#regionInfo").innerHTML = `<b>Toda Colombia</b><div class="muted">${ARTISANS.length} talleres en ${new Set(ARTISANS.map(a=>a.region)).size} regiones. Selecciona una región para ver sus piezas.</div>`;
+  }
+  $("#mapLegend").innerHTML = Object.entries(REGIONS).map(([r,R])=>`<span><i style="background:${R.c}"></i>${r}</span>`).join("");
+  svg.querySelectorAll(".reg").forEach(el => {
+    el.onclick = () => selectRegion(state.region===el.dataset.region ? null : el.dataset.region);
+    el.onkeydown = e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el.onclick(); } };
+  });
+  svg.querySelectorAll(".pin").forEach(el => el.onkeydown = e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openArtisan(el.dataset.artisan); } });
+}
+function selectRegion(r){ state.region = r; renderMap(); renderTypes(); renderGrid(); }
+
+/* ---------------- Detalle de producto ---------------- */
+let pdQty = 1;
+function openProduct(id){
+  const p = prod(id), a = art(p.a); pdQty = 1;
+  const draw = () => {
+    const e = eta(p);
+    $("#pdBody").innerHTML = `<div class="pd">
+      <div class="art">${artSVG(p)}</div>
+      <div class="info">
+        <span class="eyebrow">${esc(p.type)} · ${esc(p.cat)}</span>
+        <h2 id="pdTitle" style="font-size:1.7rem;margin:0">${esc(p.name)}</h2>
+        <div>por <button class="artisan-link" data-artisan="${a.id}">${esc(a.name)}</button> · 📍 ${esc(a.town)}, ${esc(a.dep)}</div>
+        <div><div class="price">${cop(p.price)}</div><span class="muted" style="font-size:.85rem">Precio fijado por el artesano · IVA incluido si aplica</span></div>
+        <ul>${p.feat.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+        <dl class="kv"><dt>Material</dt><dd>${esc(p.mat)}</dd><dt>Medidas</dt><dd>${esc(p.dim)}</dd><dt>Disponibilidad</dt><dd>${p.stock>0?`${p.stock} en stock`:`Bajo pedido (${p.made} días hábiles)`}</dd><dt>Origen</dt><dd>${esc(a.town)}, ${esc(a.dep)} · Región ${esc(a.region)}</dd></dl>
+        <div class="eta-box">
+          <strong>Si pagas hoy, llega entre el ${fmtDay(e.min)} y el ${fmtDay(e.max)}</strong>
+          Enviar a <select id="pdDest" aria-label="Ciudad de destino">${Object.keys(DEST).map(c=>`<option ${c===dest?"selected":""}>${c}</option>`).join("")}</select><br>
+          Preparación: ${e.prep} día(s) · Ruta: ${e.r.label} (${e.r.days[0]}–${e.r.days[1]} días hábiles) · Envío ${cop(e.r.cost)}
+        </div>
+        <div class="actions">
+          <div class="qty"><button data-q="-1" aria-label="Menos">−</button><span>${pdQty}</span><button data-q="1" aria-label="Más">+</button></div>
+          <button class="btn btn-primary" id="pdAdd">Agregar al carrito</button>
+          <button class="btn btn-green" id="pdBuy">Comprar ahora</button>
+        </div>
+        <button class="btn btn-ar" id="pdAR" style="align-self:stretch">${IS_MOBILE ? "📱 Ver en mi espacio (realidad aumentada)" : "🧊 Ver en 3D · RA disponible en celular"}</button>
+      </div></div>`;
+    $("#pdDest").onchange = ev => { setDest(ev.target.value); draw(); };
+    $("#pdBody").querySelectorAll("[data-q]").forEach(b => b.onclick = () => {
+      const max = p.stock > 0 ? p.stock : 5; pdQty = Math.min(max, Math.max(1, pdQty + +b.dataset.q)); $("#pdBody .qty span").textContent = pdQty; });
+    $("#pdAdd").onclick = () => { addToCart(p.id, pdQty); $("#dlgProduct").close(); toast("Agregado al carrito"); };
+    $("#pdBuy").onclick = () => { addToCart(p.id, pdQty); $("#dlgProduct").close(); openCheckout(); };
+    $("#pdAR").onclick = () => { $("#dlgProduct").close(); if(window.RA) RA.open(p); else toast("Cargando visor 3D…, intenta de nuevo"); };
+    $("#pdBody .artisan-link").onclick =() => { $("#dlgProduct").close(); openArtisan(a.id); };
+  };
+  draw(); $("#dlgProduct").showModal();
+}
+
+/* ---------------- Espacio del artesano ---------------- */
+function initials(n){ return n.split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase(); }
+function openArtisan(id){
+  const a = art(id), items = PRODUCTS.filter(p=>p.a===id);
+  $("#asBody").innerHTML = `
+    <div style="height:140px;background:${a.color}">${artSVG({...items[0],shape:"none"}).replace('<svg','<svg style="height:140px;width:100%;opacity:.55"')}</div>
+    <div style="padding:0 28px 28px;margin-top:-36px">
+      <div class="avatar" style="width:76px;height:76px;background:${a.color};font-size:1.6rem">${initials(a.name)}</div>
+      <h2 id="asTitle" style="margin:10px 0 2px">${esc(a.name)}</h2>
+      <div class="muted">${esc(a.owner)} · 📍 ${esc(a.town)}, ${esc(a.dep)} · Desde ${a.since}</div>
+      <p style="max-width:46em">${esc(a.story)}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px"><span class="badge">Artesano verificado</span><span class="badge">Región ${esc(a.region)}</span><span class="badge">Despacha desde ${esc(a.hub)}</span>${a.remote?'<span class="badge warn">Zona de difícil acceso (+2–3 días)</span>':""}</div>
+      <h3 style="font-family:var(--sans);font-size:1rem">Productos del taller (${items.length})</h3>
+      <div class="grid">${items.map(cardHTML).join("")}</div>
+    </div>`;
+  $("#dlgArtisan").showModal();
+}
+function renderArtisans(){
+  $("#artGrid").innerHTML = ARTISANS.map(a => {
+    const n = PRODUCTS.filter(p=>p.a===a.id).length;
+    return `<article class="artisan">
+      <div class="cover" style="background:${a.color}"></div>
+      <div class="info">
+        <div class="avatar" style="background:${a.color}">${initials(a.name)}</div>
+        <h3>${esc(a.name)}</h3>
+        <div class="loc">📍 ${esc(a.town)}, ${esc(a.dep)} · ${n} productos</div>
+        <p>${esc(a.story)}</p>
+        <button class="btn btn-ghost btn-sm" data-artisan="${a.id}">Visitar su vitrina</button>
+      </div></article>`;
+  }).join("");
+}
+
+/* ---------------- Carrito ---------------- */
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("ra_cart")||"[]").filter(i=>prod(i.id)); } catch(e){ cart = []; }
+function saveCart(){ try{ localStorage.setItem("ra_cart", JSON.stringify(cart)); }catch(e){} }
+function addToCart(id, q=1){ const it = cart.find(i=>i.id===id); if(it) it.q += q; else cart.push({id,q}); saveCart(); renderCart(); }
+function shipments(city=dest, from=new Date()){
+  const by = {};
+  cart.forEach(i => { const p = prod(i.id); (by[p.a] ||= []).push({...i,p}); });
+  return Object.entries(by).map(([aid, items]) => {
+    const a = art(aid), prep = Math.max(...items.map(i=>prepDays(i.p))), r = route(a, city);
+    const ship = addBiz(from, prep);
+    return {a, items, prep, r, ship, min:addBiz(ship,r.days[0]), max:addBiz(ship,r.days[1]), sub:items.reduce((s,i)=>s+i.p.price*i.q,0)};
+  });
+}
+function totals(){ const sh = shipments(); const sub = sh.reduce((s,x)=>s+x.sub,0), env = sh.reduce((s,x)=>s+x.r.cost,0); return {sh,sub,env,total:sub+env}; }
+function renderCart(){
+  $("#cartCount").textContent = cart.reduce((s,i)=>s+i.q,0);
+  if(!cart.length){ $("#cartItems").innerHTML = `<p class="muted" style="padding:20px 0">Tu carrito está vacío. Explora el catálogo y apoya a un taller colombiano.</p>`; $("#cartFoot").innerHTML=""; return; }
+  $("#cartItems").innerHTML = cart.map(i => { const p = prod(i.id), a = art(p.a); return `
+    <div class="ci"><div class="thumb">${artSVG(p)}</div>
+      <div><div class="t">${esc(p.name)}</div><div class="s">${esc(a.name)} · ${i.q} × ${cop(p.price)}</div><button class="rm" data-rm="${p.id}">Quitar</button></div>
+      <div style="font-weight:700">${cop(p.price*i.q)}</div></div>`; }).join("");
+  const t = totals();
+  $("#cartFoot").innerHTML = `
+    <div class="sum"><span>Subtotal</span><span>${cop(t.sub)}</span></div>
+    <div class="sum"><span>Envío a ${esc(dest)} (${t.sh.length} ${t.sh.length>1?"despachos":"despacho"})</span><span>${cop(t.env)}</span></div>
+    <div class="sum total"><span>Total</span><span>${cop(t.total)}</span></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:12px" id="goCheckout">Ir a pagar</button>`;
+  $("#goCheckout").onclick = () => { closeCart(); openCheckout(); };
+}
+function openCart(){ $("#drawer").classList.add("open"); $("#scrim").classList.add("open"); }
+function closeCart(){ $("#drawer").classList.remove("open"); $("#scrim").classList.remove("open"); }
+
+/* ---------------- Checkout (pasarela simulada) ---------------- */
+function openCheckout(){
+  if(!cart.length){ toast("Tu carrito está vacío"); return; }
+  const t = totals();
+  $("#coBody").innerHTML = `
+    <h2 id="coTitle">Finalizar compra</h2>
+    <div class="demo-note">Pasarela de pago simulada para el piloto. No ingreses datos reales: no se cobra ni se envía nada.</div>
+    <form id="coForm" style="display:grid;gap:14px;margin-top:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label for="coName">Nombre de quien recibe</label><input id="coName" required placeholder="Nombre y apellido"></div>
+        <div class="field"><label for="coCity">Ciudad</label><select id="coCity">${Object.keys(DEST).map(c=>`<option ${c===dest?"selected":""}>${c}</option>`).join("")}</select></div>
+        <div class="field" style="grid-column:1/-1"><label for="coAddr">Dirección</label><input id="coAddr" required placeholder="Calle, número, barrio"></div>
+      </div>
+      <div><div class="field"><label>Medio de pago</label></div>
+        <div class="pay-methods">
+          ${["PSE","Tarjeta crédito/débito","Nequi","Daviplata","Efecty"].map((m,i)=>`<label><input type="radio" name="pm" value="${m}" ${i===0?"checked":""}>${m}</label>`).join("")}
+        </div></div>
+      <div id="coShip"></div>
+      <div style="border-top:1px solid var(--line);padding-top:12px">
+        <div class="sum"><span>Productos</span><span id="coSub"></span></div>
+        <div class="sum"><span>Envíos</span><span id="coEnv"></span></div>
+        <div class="sum total"><span>Total a pagar</span><span id="coTot"></span></div>
+      </div>
+      <button class="btn btn-green" type="submit" id="coPay">Pagar ${cop(t.total)} (simulado)</button>
+    </form>`;
+  const drawShip = () => {
+    const t = totals();
+    $("#coShip").innerHTML = `<h3 style="font-family:var(--sans);font-size:1rem;margin:0">Tiempo de entrega estimado</h3>` + t.sh.map(s=>`
+      <div class="shipment"><b>${esc(s.a.name)}</b> <span class="muted">· desde ${esc(s.a.town)}</span><br>
+      <span style="color:var(--green);font-weight:600">Llega entre ${fmtDay(s.min)} y ${fmtDay(s.max)}</span>
+      <div class="muted" style="font-size:.85rem">Preparación ${s.prep} día(s) + ${s.r.label} ${s.r.days[0]}–${s.r.days[1]} días hábiles · Envío ${cop(s.r.cost)}</div></div>`).join("");
+    $("#coSub").textContent = cop(t.sub); $("#coEnv").textContent = cop(t.env); $("#coTot").textContent = cop(t.total);
+    $("#coPay").textContent = `Pagar ${cop(t.total)} (simulado)`;
+  };
+  drawShip();
+  $("#coCity").onchange = e => { setDest(e.target.value); drawShip(); };
+  $("#coForm").onsubmit = e => {
+    e.preventDefault();
+    if(!$("#coName").value.trim() || !$("#coAddr").value.trim()){ toast("Completa nombre y dirección"); return; }
+    const btn = $("#coPay"); btn.disabled = true; btn.textContent = "Procesando pago…";
+    setTimeout(()=>confirmOrder(document.querySelector('input[name="pm"]:checked').value), 1200);
+  };
+  $("#dlgCheckout").showModal();
+}
+function confirmOrder(method){
+  const paid = new Date(), t = totals(), order = "RA-" + paid.getTime().toString().slice(-7);
+  $("#coBody").innerHTML = `
+    <div style="text-align:center;padding:8px 0 4px"><div style="font-size:2.6rem">✅</div>
+    <h2 id="coTitle" style="margin:4px 0">¡Pago aprobado!</h2>
+    <p class="muted">Pedido <b>${order}</b> · ${esc(method)} · ${cop(t.total)}<br>Pagado el ${paid.toLocaleString("es-CO",{dateStyle:"full",timeStyle:"short"})}</p></div>
+    ${t.sh.map(s=>`<div class="shipment">
+      <b>${esc(s.a.name)}</b> → ${esc(dest)}<br><span style="color:var(--green);font-weight:600">Entrega garantizada entre ${fmtDay(s.min)} y ${fmtDay(s.max)}</span>
+      <ol class="timeline">
+        <li class="done"><span>Pago confirmado</span><time>${fmtDay(paid)}</time></li>
+        <li class="done"><span>Taller notificado</span><time>${fmtDay(paid)}</time></li>
+        <li><span>Elaboración / alistamiento (${s.prep} día${s.prep>1?"s":""})</span><time>hasta ${fmtDay(s.ship)}</time></li>
+        <li><span>Recogida por la transportadora</span><time>${fmtDay(s.ship)}</time></li>
+        <li><span>En tránsito · ${esc(s.r.label)}</span><time>${s.r.days[0]}–${s.r.days[1]} días</time></li>
+        <li><span>Entregado</span><time>${fmtDay(s.min)} – ${fmtDay(s.max)}</time></li>
+      </ol></div>`).join("")}
+    <p class="muted" style="font-size:.85rem">El pago queda en custodia y se libera al artesano cuando confirmes la recepción. Si la transportadora incumple la fecha máxima, aplica la compensación del acuerdo de servicio.</p>
+    <button class="btn btn-primary" data-close style="width:100%">Seguir explorando</button>`;
+  cart = []; saveCart(); renderCart();
+}
+
+/* ---------------- Formulario de artesanos ---------------- */
+function renderSellPreview(){
+  const price = Math.max(0, +$("#fPrecio").value || 0), dias = Math.max(0, +$("#fDias").value || 0);
+  const oficio = $("#fOficio").value, shape = {"Vestuario":"ruana","Accesorios de ropa":"mochila","Decoración":"caja","Utensilios":"vasija"}[oficio];
+  const fake = {name:$("#fProd").value || "Tu producto", shape, pat:"rombos", pal:["#B5502E","#E0A526","#2F5D50","#FBF0E0"]};
+  $("#sellPreview").innerHTML = `<div class="art">${artSVG(fake)}</div><div class="body">
+    ${dias>0?`<span class="badge warn">Bajo pedido · ${dias} días</span>`:`<span class="badge">En stock</span>`}
+    <h3>${esc(fake.name)}</h3><div class="who">${esc($("#fTaller").value || "Tu taller")} · ${esc($("#fMun").value || "Tu municipio")}, ${esc($("#fDep").value)}</div>
+    <div class="price">${cop(price)}</div></div>`;
+  const com = Math.round(price*.08), pas = price ? Math.round(price*.029+900) : 0;
+  $("#pPub").textContent = cop(price); $("#pCom").textContent = "− " + cop(com); $("#pPas").textContent = "− " + cop(pas); $("#pNet").textContent = cop(Math.max(0, price-com-pas));
+}
+
+/* ---------------- Inicialización ---------------- */
+function setDest(c){ dest = c; $("#destSel").value = c; renderGrid(); renderCart(); }
+function init(){
+  $("#destSel").innerHTML = Object.keys(DEST).map(c=>`<option>${c}</option>`).join(""); $("#destSel").value = dest;
+  $("#destSel").onchange = e => setDest(e.target.value);
+  $("#typeFilters").onclick = e => { const b = e.target.closest(".type"); if(!b) return; state.type = b.dataset.type || null; renderTypes(); renderGrid(); };
+  renderTypes(); renderMap();
+  $("#sortSel").onchange = e => { state.sort = e.target.value; renderGrid(); };
+  $("#clearFilter").onclick = () => { state.q = ""; state.artisan = null; $("#heroQ").value=""; renderGrid(); };
+  $("#heroArt").onclick = null;
+  $("#heroSearch").onsubmit = e => { e.preventDefault(); state.q = $("#heroQ").value; state.artisan = null; renderGrid(); $("#catalogo").scrollIntoView(); };
+  $("#heroArt").innerHTML = ["p1","p3","p5","p9"].map(id=>`<div class="tile">${artSVG(prod(id))}</div>`).join("");
+  $("#statArt").textContent = ARTISANS.length; $("#statDep").textContent = new Set(ARTISANS.map(a=>a.dep)).size;
+  $("#slaBody").innerHTML = Object.values(SLA).map(s=>`<tr><td><b>${s.label}</b></td><td>${s.ex}</td><td>${s===SLA.remoto?"+":""}${s.d[0]}–${s.d[1]}</td><td>${s===SLA.remoto?"+ ":""}${cop(s.cost)}</td></tr>`).join("");
+  // Delegación de clics
+  document.addEventListener("click", e => {
+    const c = e.target.closest("[data-p]"); if(c && !e.target.closest("#sellPreview")){ document.querySelectorAll("dialog[open]").forEach(d=>d.close()); openProduct(c.dataset.p); return; }
+    const ab = e.target.closest("[data-artisan]"); if(ab && !ab.classList.contains("artisan-link")){ openArtisan(ab.dataset.artisan); return; }
+    const rm = e.target.closest("[data-rm]"); if(rm){ cart = cart.filter(i=>i.id!==rm.dataset.rm); saveCart(); renderCart(); return; }
+    if(e.target.closest("[data-close]")) e.target.closest("dialog").close();
+  });
+  document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => { if(e.target === d) d.close(); }));
+  $("#openCart").onclick = openCart; $("#closeCart").onclick = closeCart; $("#scrim").onclick = closeCart;
+  document.addEventListener("keydown", e => { if(e.key==="Escape") closeCart(); });
+  // Formulario artesanos
+  $("#fOficio").innerHTML = TYPES.map(t=>`<option>${t.k}</option>`).join("");
+  $("#fDep").innerHTML = ["Amazonas","Antioquia","Arauca","Atlántico","Bolívar","Boyacá","Caldas","Caquetá","Casanare","Cauca","Cesar","Chocó","Córdoba","Cundinamarca","Guainía","Guaviare","Huila","La Guajira","Magdalena","Meta","Nariño","Norte de Santander","Putumayo","Quindío","Risaralda","San Andrés y Providencia","Santander","Sucre","Tolima","Valle del Cauca","Vaupés","Vichada","Bogotá D.C."].map(d=>`<option>${d}</option>`).join("");
+  $("#fDep").value = "Valle del Cauca";
+  $("#sellForm").addEventListener("input", renderSellPreview);
+  $("#sellForm").onsubmit = e => {
+    e.preventDefault();
+    if(!$("#fTaller").value.trim() || !$("#fProd").value.trim() || !$("#fMun").value.trim()){ toast("Completa taller, municipio y producto"); return; }
+    toast("¡Solicitud recibida! Te contactaremos para verificar tu taller (demo)."); e.target.reset(); $("#fDep").value = "Valle del Cauca"; renderSellPreview();
+  };
+  renderSellPreview(); renderArtisans(); renderGrid(); renderCart();
+}
+init();
+</script>
+
+<!-- ---------------- Realidad aumentada: modelos 3D generados a escala real ---------------- -->
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from "three";
+import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+
+const MV_URL = "https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js";
+const cache = {};
+/* Piezas que se cuelgan en la pared en RA; el resto se ubica en el piso o una mesa */
+const WALL = new Set(["ruana","camisa"]);
+
+function texture(p){
+  return new Promise((res, rej) => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><defs>${pattern("tx", p.pat, p.pal)}</defs><rect width="512" height="512" fill="url(#tx)"/></svg>`;
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas"); c.width = c.height = 512;
+      c.getContext("2d").drawImage(img, 0, 0);
+      const t = new THREE.CanvasTexture(c);
+      t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      res(t);
+    };
+    img.onerror = rej;
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  });
+}
+const V2 = pts => pts.map(([r,h]) => new THREE.Vector2(r,h));
+const lathe = (pts, m) => new THREE.Mesh(new THREE.LatheGeometry(V2(pts), 56), m);
+const tube = (pts, r, m) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(v=>new THREE.Vector3(...v))), 40, r, 10), m);
+const ring = (R, r, m, y=0) => { const t = new THREE.Mesh(new THREE.TorusGeometry(R, r, 10, 56), m); t.rotation.x = Math.PI/2; t.position.y = y; return t; };
+const flat = (pts, depth, m) => { const s = new THREE.Shape(pts.map(([x,y]) => new THREE.Vector2(x,y))); return new THREE.Mesh(new THREE.ExtrudeGeometry(s, {depth, bevelEnabled:false}), m); };
+
+/* Cada constructor trabaja en metros: el modelo aparece a tamaño real en RA */
+const BUILD = {
+  mochila(p, M, A, g){
+    g.add(lathe([[0,0],[0.13,0],[0.14,0.02],[0.14,0.30]], M));
+    g.add(ring(0.14, 0.008, A, 0.30));
+    g.add(tube([[-0.14,0.30,0],[-0.17,0.55,0],[-0.08,0.78,0],[0.08,0.78,0],[0.17,0.55,0],[0.14,0.30,0]], 0.012, A));
+  },
+  sombrero(p, M, A, g){
+    const big = p.id === "p4" ? 1.04 : 1;
+    g.add(lathe([[0,0.13],[0.06,0.128],[0.085,0.105],[0.095,0.03],[0.10,0.018],[0.22,0.012],[0.226,0.0]].map(([r,h])=>[r*big,h*big]), M));
+  },
+  vasija(p, M, A, g){
+    if(p.id === "p5"){
+      g.add(lathe([[0,0],[0.08,0],[0.12,0.04],[0.13,0.09],[0.12,0.14],[0.10,0.165],[0.106,0.18]], M));
+      [-1,1].forEach(s => { const h = new THREE.Mesh(new THREE.TorusGeometry(0.03,0.008,8,24,Math.PI), A); h.position.set(s*0.135,0.13,0); h.rotation.z = s*-Math.PI/2; g.add(h); });
+    } else {
+      const r = p.id === "p6" ? 0.07 : 0.06, h = p.id === "p6" ? 0.05 : 0.055;
+      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([x,z]) => { const b = lathe([[0,0],[r*0.6,0],[r,h*0.6],[r*1.02,h]], M); b.position.set(x*(r+0.02), 0, z*(r+0.02)); g.add(b); });
+    }
+  },
+  canasto(p, M, A, g){
+    if(p.id === "p10"){
+      for(let i=0;i<6;i++){ const d = new THREE.Mesh(new THREE.CylinderGeometry(0.175,0.175,0.006,56), M); d.position.y = 0.003 + i*0.007; g.add(d); }
+    } else if(p.id === "p11"){
+      g.add(lathe([[0,0],[0.08,0],[0.11,0.08],[0.115,0.16],[0.09,0.25],[0.06,0.29],[0.065,0.32]], M));
+      g.add(lathe([[0.068,0.32],[0.04,0.335],[0,0.34]], A));
+    } else {
+      g.add(lathe([[0,0],[0.11,0],[0.15,0.2],[0.152,0.22]], M));
+      g.add(lathe([[0.158,0.22],[0.12,0.25],[0,0.262]], M));
+      g.add(ring(0.155, 0.006, A, 0.22));
+    }
+  },
+  joya(p, M, A, g){
+    if(p.id === "p8"){
+      g.add(ring(0.075, 0.0025, A, 0.002));
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.004,40), M); d.position.set(0,0.002,0.095); g.add(d);
+    } else {
+      [-1,1].forEach(s => { const e = new THREE.Mesh(new THREE.TorusGeometry(0.009,0.0022,10,40), M); e.position.set(s*0.02,0.012,0); g.add(e);
+        const c = new THREE.Mesh(new THREE.CylinderGeometry(0.004,0.004,0.004,20), A); c.position.set(s*0.02,0.012,0); c.rotation.x = Math.PI/2; g.add(c); });
+    }
+  },
+  hamaca(p, M, A, g){
+    const wood = new THREE.MeshStandardMaterial({color:"#6B4A2B", roughness:.9});
+    [-1,1].forEach(s => { const post = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.05,1.4,16), wood); post.position.set(s*1.45,0.7,0); g.add(post);
+      const foot = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.05,0.9), wood); foot.position.set(s*1.45,0.025,0); g.add(foot); });
+    const geo = new THREE.PlaneGeometry(2.1, 1.0, 40, 16), pos = geo.attributes.position;
+    for(let i=0;i<pos.count;i++){
+      const x = pos.getX(i), z = pos.getY(i);
+      pos.setXYZ(i, x, 1.15 - 0.55*(1-(x/1.05)**2) + 0.12*(z/0.5)**2*(1-(x/1.05)**2)**0.5, z*(0.35+0.65*(1-(x/1.05)**2)));
+    }
+    geo.computeVertexNormals(); g.add(new THREE.Mesh(geo, M));
+    [-1,1].forEach(s => [-0.15,0,0.15].forEach(z => g.add(tube([[s*1.43,1.32,0],[s*1.05,1.15,z*0.6]], 0.006, A))));
+  },
+  caja(p, M, A, g){
+    if(p.id === "p13"){
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.40,0.012,0.28), M); b.position.y = 0.006; g.add(b);
+      [[0,0.14,0.40,0.01],[0,-0.14,0.40,0.01],[0.2,0,0.01,0.28],[-0.2,0,0.01,0.28]].forEach(([x,z,w,d]) => { const r = new THREE.Mesh(new THREE.BoxGeometry(w,0.035,d), A); r.position.set(x,0.0175,z); g.add(r); });
+    } else {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.18,0.065,0.12), M); b.position.y = 0.0325; g.add(b);
+      const l = new THREE.Mesh(new THREE.BoxGeometry(0.186,0.02,0.126), A); l.position.y = 0.075; g.add(l);
+    }
+  },
+  ruana(p, M, A, g){
+    const m = flat([[-0.35,1.2],[0.35,1.2],[0.65,0],[-0.65,0]], 0.015, M); g.add(m);
+    for(let x=-0.6; x<=0.61; x+=0.06){ const f = new THREE.Mesh(new THREE.CylinderGeometry(0.003,0.003,0.1,6), A); f.position.set(x,-0.05,0.008); g.add(f); }
+    g.position.y = 0.1;
+  },
+  camisa(p, M, A, g){
+    g.add(flat([[-0.09,0.75],[-0.2,0.71],[-0.36,0.52],[-0.27,0.44],[-0.2,0.52],[-0.2,0],[0.2,0],[0.2,0.52],[0.27,0.44],[0.36,0.52],[0.2,0.71],[0.09,0.75],[0,0.69]], 0.012, M));
+  },
+  cinturon(p, M, A, g){
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.04,64,1,true), M); b.position.y = 0.02; g.add(b);
+    const k = new THREE.Mesh(new THREE.TorusGeometry(0.025,0.006,8,4), A); k.rotation.z = Math.PI/4; k.position.set(0,0.02,0.155); g.add(k);
+  }
+};
+
+async function buildGLB(p){
+  if(cache[p.id]) return cache[p.id];
+  const tex = await texture(p);
+  const M = new THREE.MeshStandardMaterial({map:tex, roughness:.85, metalness:p.shape==="joya"?.6:0, side:THREE.DoubleSide});
+  const A = new THREE.MeshStandardMaterial({color:p.pal[2], roughness:.7, metalness:p.shape==="joya"?.8:0, side:THREE.DoubleSide});
+  const scene = new THREE.Scene(), g = new THREE.Group();
+  BUILD[p.shape](p, M, A, g); scene.add(g);
+  const glb = await new GLTFExporter().parseAsync(scene, {binary:true});
+  return cache[p.id] = URL.createObjectURL(new Blob([glb], {type:"model/gltf-binary"}));
+}
+
+let mvReady = null;
+const loadMV = () => mvReady ||= import(MV_URL);
+const ov = document.getElementById("arOverlay");
+function close(){ ov.hidden = true; document.getElementById("arStage").innerHTML = ""; document.body.style.overflow = ""; }
+document.getElementById("arClose").onclick = close;
+document.addEventListener("keydown", e => { if(e.key === "Escape" && !ov.hidden) close(); });
+
+async function open(p){
+  const stage = document.getElementById("arStage"), foot = document.getElementById("arFoot"), wall = WALL.has(p.shape);
+  document.getElementById("arTitle").textContent = p.name;
+  document.getElementById("arSub").textContent = `Tamaño real: ${p.dim}`;
+  stage.innerHTML = `<div class="ar-loading">Preparando modelo 3D…</div>`;
+  foot.innerHTML = "";
+  ov.hidden = false; document.body.style.overflow = "hidden";
+  try{
+    const [src] = await Promise.all([buildGLB(p), loadMV()]);
+    const mv = document.createElement("model-viewer");
+    Object.entries({src, alt:`Modelo 3D de ${p.name}`, ar:"", "ar-modes":"webxr quick-look", "ar-scale":"fixed", "ar-placement":wall?"wall":"floor",
+      "camera-controls":"", "auto-rotate":"", "shadow-intensity":"1", exposure:"1.05", "touch-action":"pan-y", "interaction-prompt":"auto"}).forEach(([k,v]) => mv.setAttribute(k,v));
+    mv.innerHTML = `<button slot="ar-button" class="ar-launch">📱 Ver en mi espacio</button>`;
+    mv.addEventListener("load", () => {
+      stage.querySelector(".ar-loading")?.remove();
+      foot.innerHTML = mv.canActivateAR
+        ? `<b>Cómo usarlo:</b> toca “Ver en mi espacio”, apunta la cámara ${wall?"a una pared":"al piso o a una mesa"} y mueve el celular despacio. Arrastra para mover la pieza y gírala con dos dedos. Se muestra a tamaño real.`
+        : `<b>Vista 3D:</b> arrastra para girar y pellizca para acercar. Para verla en tu espacio con realidad aumentada, abre esta página desde tu celular (Android con Chrome o iPhone con Safari).`;
+    });
+    mv.addEventListener("ar-status", e => { if(e.detail.status === "failed") foot.innerHTML = `<b>No se pudo iniciar la RA.</b> Verifica que tu celular sea compatible (ARCore en Android o iOS 12+) y que la página esté abierta por HTTPS.`; });
+    mv.addEventListener("error", () => { stage.innerHTML = `<div class="ar-loading">No se pudo cargar el modelo 3D.</div>`; });
+    stage.appendChild(mv);
+  }catch(err){
+    stage.innerHTML = `<div class="ar-loading">No se pudo cargar el visor 3D. Revisa tu conexión.</div>`;
+  }
+}
+window.RA = {open, buildGLB};
+</script>
+</body>
+</html>
