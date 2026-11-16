@@ -552,7 +552,9 @@ const fmtDay = d => d.toLocaleDateString("es-CO",{weekday:"short",day:"numeric",
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2600); }
 
 let dest = "Cali";
-const IS_MOBILE = matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
+/* Piezas que se usan en la cabeza o el cuello: se prueban con seguimiento facial, no en el piso */
+const TRY_ON = new Set(["joya","sombrero"]);
+const IS_MOBILE =matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
 function route(a, city){
   const d = DEST[city]; let cls, days, cost;
   if(a.hub === city){ cls="local"; } else if(a.region === d.r){ cls="regional"; } else { cls="nacional"; }
@@ -716,7 +718,9 @@ function openProduct(id){
           <button class="btn btn-primary" id="pdAdd">Agregar al carrito</button>
           <button class="btn btn-green" id="pdBuy">Comprar ahora</button>
         </div>
-        <button class="btn btn-ar" id="pdAR" style="align-self:stretch">${IS_MOBILE ? "📱 Ver en mi espacio (realidad aumentada)" : "🧊 Ver en 3D · RA disponible en celular"}</button>
+        ${TRY_ON.has(p.shape) ? `<button class="btn btn-ar" id="pdTry" style="align-self:stretch">🪞 Pruébatelo con tu cámara</button>
+        <button class="btn btn-ghost btn-sm" id="pdAR" style="align-self:flex-start">🧊 Ver en 3D</button>`
+        : `<button class="btn btn-ar" id="pdAR" style="align-self:stretch">${IS_MOBILE ? "📱 Ver en mi espacio (realidad aumentada)" : "🧊 Ver en 3D · RA disponible en celular"}</button>`}
       </div></div>`;
     $("#pdDest").onchange = ev => { setDest(ev.target.value); draw(); };
     $("#pdBody").querySelectorAll("[data-q]").forEach(b => b.onclick = () => {
@@ -724,6 +728,7 @@ function openProduct(id){
     $("#pdAdd").onclick = () => { addToCart(p.id, pdQty); $("#dlgProduct").close(); toast("Agregado al carrito"); };
     $("#pdBuy").onclick = () => { addToCart(p.id, pdQty); $("#dlgProduct").close(); openCheckout(); };
     $("#pdAR").onclick = () => { $("#dlgProduct").close(); if(window.RA) RA.open(p); else toast("Cargando visor 3D…, intenta de nuevo"); };
+    if($("#pdTry")) $("#pdTry").onclick = () => { $("#dlgProduct").close(); if(window.RA) RA.tryOn(p); else toast("Cargando probador…, intenta de nuevo"); };
     $("#pdBody .artisan-link").onclick =() => { $("#dlgProduct").close(); openArtisan(a.id); };
   };
   draw(); $("#dlgProduct").showModal();
@@ -924,20 +929,20 @@ const cache = {};
 /* Piezas que se cuelgan en la pared en RA; el resto se ubica en el piso o una mesa */
 const WALL = new Set(["ruana","camisa"]);
 
-function texture(p){
-  return new Promise((res, rej) => {
+const patCache = {};
+function patternCanvas(p){
+  return patCache[p.id] ||= new Promise((res, rej) => {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><defs>${pattern("tx", p.pat, p.pal)}</defs><rect width="512" height="512" fill="url(#tx)"/></svg>`;
     const img = new Image();
-    img.onload = () => {
-      const c = document.createElement("canvas"); c.width = c.height = 512;
-      c.getContext("2d").drawImage(img, 0, 0);
-      const t = new THREE.CanvasTexture(c);
-      t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
-      res(t);
-    };
+    img.onload = () => { const c = document.createElement("canvas"); c.width = c.height = 512; c.getContext("2d").drawImage(img, 0, 0); res(c); };
     img.onerror = rej;
     img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
   });
+}
+async function texture(p){
+  const t = new THREE.CanvasTexture(await patternCanvas(p));
+  t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
 }
 const V2 = pts => pts.map(([r,h]) => new THREE.Vector2(r,h));
 const lathe = (pts, m) => new THREE.Mesh(new THREE.LatheGeometry(V2(pts), 56), m);
@@ -1035,11 +1040,12 @@ async function buildGLB(p){
 let mvReady = null;
 const loadMV = () => mvReady ||= import(MV_URL);
 const ov = document.getElementById("arOverlay");
-function close(){ ov.hidden = true; document.getElementById("arStage").innerHTML = ""; document.body.style.overflow = ""; }
+function close(){ stopTryOn(); ov.hidden = true; document.getElementById("arStage").innerHTML = ""; document.body.style.overflow = ""; }
 document.getElementById("arClose").onclick = close;
 document.addEventListener("keydown", e => { if(e.key === "Escape" && !ov.hidden) close(); });
 
 async function open(p){
+  stopTryOn();
   const stage = document.getElementById("arStage"), foot = document.getElementById("arFoot"), wall = WALL.has(p.shape);
   document.getElementById("arTitle").textContent = p.name;
   document.getElementById("arSub").textContent = `Tamaño real: ${p.dim}`;
@@ -1065,7 +1071,173 @@ async function open(p){
     stage.innerHTML = `<div class="ar-loading">No se pudo cargar el visor 3D. Revisa tu conexión.</div>`;
   }
 }
-window.RA = {open, buildGLB};
+/* ================= Probador virtual con seguimiento facial =================
+   MediaPipe Face Landmarker corre en el dispositivo: la imagen de la cámara no se envía a ningún servidor.
+   Escala real: el ancho entre los puntos 234 y 454 (pómulo a pómulo) se toma como ~14 cm en un adulto. */
+const MP = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+const FACE_MODEL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+const FACE_CM = 14;
+let landmarker = null, tryState = null;
+
+async function getLandmarker(){
+  if(landmarker) return landmarker;
+  const {FaceLandmarker, FilesetResolver} = await import(MP + "/vision_bundle.mjs");
+  const files = await FilesetResolver.forVisionTasks(MP + "/wasm");
+  const opts = delegate => ({baseOptions:{modelAssetPath:FACE_MODEL, delegate}, runningMode:"VIDEO", numFaces:1});
+  try { landmarker = await FaceLandmarker.createFromOptions(files, opts("GPU")); }
+  catch(e){ landmarker = await FaceLandmarker.createFromOptions(files, opts("CPU")); }
+  return landmarker;
+}
+
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const add = (a,b,k=1) => ({x:a.x+b.x*k, y:a.y+b.y*k});
+const lerp = (a,b,t) => ({x:a.x+(b.x-a.x)*t, y:a.y+(b.y-a.y)*t});
+/* Pose 2D del rostro a partir de los puntos clave, en píxeles del video */
+function facePose(lm, W, H){
+  const P = i => ({x:lm[i].x*W, y:lm[i].y*H});
+  const L = P(234), R = P(454), T = P(10), B = P(152), N = P(1);
+  const fw = Math.hypot(R.x-L.x, R.y-L.y), fh = Math.hypot(B.x-T.x, B.y-T.y);
+  const ang = Math.atan2(R.y-L.y, R.x-L.x);
+  const ux = {x:Math.cos(ang), y:Math.sin(ang)}, down = {x:-Math.sin(ang), y:Math.cos(ang)};
+  const t = ((N.x-L.x)*ux.x + (N.y-L.y)*ux.y) / fw;   // 0.5 = de frente; hacia 0 o 1 = cabeza girada
+  return {P, L, R, T, B, N, fw, fh, ang, ux, down, t, cm:fw/FACE_CM};
+}
+
+function drawEarring(ctx, f, side, p){
+  const edge = side < 0 ? f.L : f.R, jaw = f.P(side < 0 ? 93 : 323);
+  const out = {x:f.ux.x*side, y:f.ux.y*side};
+  const lobe = add(add(lerp(edge, jaw, .75), out, .03*f.fw), f.down, .02*f.fw);
+  // Oreja oculta cuando la cabeza gira hacia ese lado
+  const alpha = side < 0 ? clamp((f.t-.25)/.12, 0, 1) : clamp((.75-f.t)/.12, 0, 1);
+  if(alpha <= 0) return;
+  const r = 0.9*f.cm, c = add(lobe, f.down, .25*f.cm + r);
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.strokeStyle = "#C9CED6"; ctx.lineWidth = Math.max(1, .08*f.cm);
+  ctx.beginPath(); ctx.moveTo(lobe.x, lobe.y); ctx.lineTo(c.x - f.down.x*r, c.y - f.down.y*r); ctx.stroke();
+  ctx.translate(c.x, c.y); ctx.rotate(f.ang);
+  const g = ctx.createRadialGradient(-r*.3,-r*.3,r*.1,0,0,r);
+  const gold = p.id === "p8"; g.addColorStop(0, gold?"#FFF1C2":"#FFFFFF"); g.addColorStop(.6, gold?"#D4A84B":"#C3C8D0"); g.addColorStop(1, gold?"#8C6A22":"#7D838C");
+  ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = r*.4; ctx.shadowOffsetY = r*.15;
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+  ctx.shadowColor = "transparent";
+  // Filigrana: anillos y espirales
+  ctx.strokeStyle = "rgba(90,96,105,.7)"; ctx.lineWidth = Math.max(.6, r*.06);
+  ctx.beginPath(); ctx.arc(0,0,r*.78,0,Math.PI*2); ctx.stroke();
+  for(let i=0;i<8;i++){ const a = i*Math.PI/4; ctx.beginPath(); ctx.arc(Math.cos(a)*r*.52, Math.sin(a)*r*.52, r*.2, 0, Math.PI*2); ctx.stroke(); }
+  ctx.fillStyle = "#EEF0F3"; ctx.beginPath(); ctx.arc(0,0,r*.2,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function drawNecklace(ctx, f){
+  const sideL = add(f.P(58), f.down, .32*f.fh), sideR = add(f.P(288), f.down, .32*f.fh);
+  const ctrl = add(f.B, f.down, .85*f.fh);
+  const mid = {x:.25*sideL.x+.5*ctrl.x+.25*sideR.x, y:.25*sideL.y+.5*ctrl.y+.25*sideR.y};
+  ctx.save();
+  ctx.strokeStyle = "#D4A84B"; ctx.lineWidth = Math.max(1.2, .18*f.cm); ctx.setLineDash([.35*f.cm, .2*f.cm]);
+  ctx.shadowColor = "rgba(0,0,0,.3)"; ctx.shadowBlur = 3;
+  ctx.beginPath(); ctx.moveTo(sideL.x, sideL.y); ctx.quadraticCurveTo(ctrl.x, ctrl.y, sideR.x, sideR.y); ctx.stroke();
+  ctx.setLineDash([]);
+  // Dije: flor momposina de 4 cm
+  const r = 2*f.cm; ctx.translate(mid.x, mid.y + r*.9); ctx.rotate(f.ang);
+  for(let i=0;i<6;i++){ const a = i*Math.PI/3; const g = ctx.createRadialGradient(Math.cos(a)*r*.5, Math.sin(a)*r*.5, 1, Math.cos(a)*r*.5, Math.sin(a)*r*.5, r*.45);
+    g.addColorStop(0,"#FFF1C2"); g.addColorStop(1,"#A9832F"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(Math.cos(a)*r*.5, Math.sin(a)*r*.5, r*.42, 0, Math.PI*2); ctx.fill(); }
+  ctx.fillStyle = "#8C6A22"; ctx.beginPath(); ctx.arc(0,0,r*.28,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function drawHat(ctx, f, p, pat){
+  const k = p.id === "p4" ? 1.04 : 1, cm = f.cm*k;
+  const c = add(f.T, f.down, .02*f.fh);              // ala apoyada en la línea del cabello
+  const rx = 22.5*cm, ry = rx*.17, crownB = 9.5*cm, crownT = 7.2*cm, crownH = 11*cm;
+  // Giro de cabeza: desplaza la copa sobre el ala
+  const yaw = (f.t - .5) * 2 * rx * .25;
+  ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(f.ang);
+  pat.setTransform(new DOMMatrix().scale(1.4*cm/28));
+  ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 2*cm; ctx.shadowOffsetY = 1.2*cm;
+  ctx.fillStyle = pat; ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowColor = "transparent";
+  ctx.strokeStyle = "rgba(30,27,24,.6)"; ctx.lineWidth = .25*cm; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(yaw-crownB, 0); ctx.lineTo(yaw-crownT, -crownH);
+  ctx.quadraticCurveTo(yaw, -crownH-2.2*cm, yaw+crownT, -crownH); ctx.lineTo(yaw+crownB, 0);
+  ctx.ellipse(yaw, 0, crownB, ry*.42, 0, 0, Math.PI); ctx.closePath();
+  ctx.fillStyle = pat; ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+
+function drawItem(ctx, f, p, pat){
+  if(p.shape === "sombrero") return drawHat(ctx, f, p, pat);
+  if(p.id === "p8") return drawNecklace(ctx, f);
+  drawEarring(ctx, f, -1, p); drawEarring(ctx, f, 1, p);
+}
+
+function stopTryOn(){
+  if(!tryState) return;
+  cancelAnimationFrame(tryState.raf);
+  tryState.stream?.getTracks().forEach(t => t.stop());
+  tryState = null;
+}
+
+async function tryOn(p){
+  const stage = document.getElementById("arStage"), foot = document.getElementById("arFoot");
+  document.getElementById("arTitle").textContent = "Pruébatelo: " + p.name;
+  document.getElementById("arSub").textContent = `Tamaño real: ${p.dim}`;
+  stage.innerHTML = `<video playsinline muted autoplay style="display:none"></video><canvas style="width:100%;height:100%;display:block;background:#1e1814"></canvas><div class="ar-loading" style="color:#fff">Encendiendo la cámara…</div>`;
+  foot.innerHTML = `🔒 Tu imagen se procesa solo en este dispositivo; no se envía ni se guarda.`;
+  ov.hidden = false; document.body.style.overflow = "hidden";
+  stopTryOn(); const st = tryState = {raf:0, stream:null};
+  const video = stage.querySelector("video"), cv = stage.querySelector("canvas"), ctx = cv.getContext("2d"), msg = stage.querySelector(".ar-loading");
+  try{
+    if(!navigator.mediaDevices?.getUserMedia) throw Object.assign(new Error("nocam"), {name:"NotSupported"});
+    st.stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"user", width:{ideal:1280}, height:{ideal:720}}, audio:false});
+    if(tryState !== st) return stopTryOnStream(st);
+    video.srcObject = st.stream; await video.play();
+    msg.textContent = "Cargando el detector de rostro…";
+    const [lmk, tex] = await Promise.all([getLandmarker(), patternCanvas(p)]);
+    if(tryState !== st) return;
+    const pat = ctx.createPattern(tex, "repeat");
+    msg.remove();
+    foot.innerHTML = `<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+      <span id="tryHint">Mira de frente a la cámara con buena luz.</span>
+      <button class="btn btn-primary btn-sm" id="trySnap">📸 Tomar foto</button></div>
+      <div style="font-size:.8rem;margin-top:6px">🔒 Tu imagen se procesa solo en este dispositivo; no se envía ni se guarda.</div>`;
+    document.getElementById("trySnap").onclick = () => cv.toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = `raiz-artesana-${p.id}.png`; a.click(); });
+    let smooth = null, lastT = -1, lastSeen = performance.now();
+    const loop = () => {
+      if(tryState !== st) return;
+      const dpr = Math.min(2, devicePixelRatio || 1), cw = cv.clientWidth*dpr, ch = cv.clientHeight*dpr;
+      if(cv.width !== cw || cv.height !== ch){ cv.width = cw; cv.height = ch; }
+      const vw = video.videoWidth, vh = video.videoHeight;
+      if(vw && video.currentTime !== lastT){
+        lastT = video.currentTime;
+        const res = lmk.detectForVideo(video, performance.now());
+        const lm = res.faceLandmarks?.[0];
+        if(lm){ lastSeen = performance.now();
+          smooth = smooth ? smooth.map((q,i) => ({x:q.x+(lm[i].x-q.x)*.55, y:q.y+(lm[i].y-q.y)*.55})) : lm.map(q => ({x:q.x, y:q.y})); }
+        else if(performance.now() - lastSeen > 600) smooth = null;
+      }
+      if(vw){
+        const s = Math.max(cw/vw, ch/vh), ox = (cw - vw*s)/2, oy = (ch - vh*s)/2;
+        ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,cw,ch);
+        ctx.translate(cw, 0); ctx.scale(-1, 1);   // efecto espejo, como un espejo real
+        ctx.translate(ox, oy); ctx.scale(s, s);
+        ctx.drawImage(video, 0, 0, vw, vh);
+        if(smooth) drawItem(ctx, facePose(smooth, vw, vh), p, pat);
+        const hint = document.getElementById("tryHint");
+        if(hint) hint.textContent = smooth ? "¡Listo! Gira la cabeza para verlo de lado." : "No vemos tu rostro: mira de frente a la cámara con buena luz.";
+      }
+      st.raf = requestAnimationFrame(loop);
+    };
+    loop();
+  }catch(err){
+    const denied = err && (err.name === "NotAllowedError" || err.name === "SecurityError");
+    msg.textContent = denied ? "Necesitamos permiso para usar la cámara. Actívalo en la configuración del navegador e inténtalo de nuevo."
+      : err && (err.name === "NotFoundError" || err.name === "NotSupported") ? "No encontramos una cámara en este dispositivo."
+      : "No se pudo iniciar el probador. Revisa tu conexión e inténtalo de nuevo.";
+  }
+}
+function stopTryOnStream(st){ st.stream?.getTracks().forEach(t => t.stop()); }
+
+window.RA = {open, buildGLB, tryOn, _test:{facePose, drawItem, patternCanvas, getLandmarker}};
 </script>
 </body>
 </html>
